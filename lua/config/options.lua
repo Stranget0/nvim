@@ -21,8 +21,6 @@ cmd([[
 	filetype plugin indent on
 ]])
 
-vim.wo.relativenumber = true
-
 opt.backspace = { "eol", "start", "indent" } -- allow backspacing over everything in insert mode
 opt.clipboard = "unnamedplus"                -- allow neovim to access the system clipboard
 vim.opt.fileencoding = "utf-8"               -- the encoding written to a file
@@ -128,6 +126,9 @@ g.rustaceanvim = {
 		on_attach = function(client, bufnr)
 			-- you can also put keymaps in here
 			local bufnr = vim.api.nvim_get_current_buf()
+			vim.cmd.RustLsp('renderDiagnostic')
+			vim.cmd.RustLsp('testables')
+
 			vim.keymap.set(
 				"n",
 				"<leader>a",
@@ -141,7 +142,7 @@ g.rustaceanvim = {
 		default_settings = {
 			-- rust-analyzer language server configuration
 			['rust-analyzer'] = {
-				checkOnSave = { command = "clippy" }
+				checkOnSave = { command = "clippy --message-format=json --target-dir=./target-editor/" }
 			},
 		},
 	},
@@ -154,6 +155,3 @@ g.rustaceanvim = {
 -- Colorscheme
 -- By default, use rose-pine
 cmd.colorscheme("tokyonight")
-
-vim.cmd.RustLsp('renderDiagnostic')
-vim.cmd.RustLsp('testables')
