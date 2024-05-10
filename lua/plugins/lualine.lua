@@ -1,3 +1,5 @@
+local f = require("utils.functions")
+
 local colors = {
 	blue   = '#80a0ff',
 	cyan   = '#79dac8',
@@ -26,10 +28,26 @@ local bubbles_theme = {
 	},
 }
 
+local hot = {
+	'Reloader',
+}
+
 return { {
 	'nvim-lualine/lualine.nvim',
-	dependencies = { 'nvim-tree/nvim-web-devicons', 'arkav/lualine-lsp-progress' },
+	dependencies = { 'nvim-tree/nvim-web-devicons', {
+		'linrongbin16/lsp-progress.nvim',
+		config = function()
+			require('lsp-progress').setup()
+		end
+	} },
 	config = function()
+		vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
+		vim.api.nvim_create_autocmd("User", {
+			group = "lualine_augroup",
+			pattern = "LspProgressStatusUpdated",
+			callback = require("lualine").refresh,
+		})
+
 		require('lualine').setup({
 			options = {
 				theme = bubbles_theme,
@@ -40,7 +58,21 @@ return { {
 				lualine_a = { { 'mode', separator = { left = '' }, right_padding = 2 } },
 				lualine_b = { 'filename', "diagnostics", "searchcount" },
 				lualine_c = {
-					'%=', "lsp_progress" --[[ add your center compoentnts here in place of this comment ]]
+					'%=', function()
+					return require('lsp-progress').progress({
+						format = function(client_messages)
+							-- icon: nf-fa-gear \uf013
+							if #client_messages > 0 then
+								local message = "󰦖 " .. table.concat(client_messages, " ")
+								return f.truncateString(message, 64)
+							end
+							if #vim.lsp.get_active_clients() > 0 then
+								return ""
+							end
+							return ""
+						end,
+					})
+				end, hot
 				},
 				lualine_x = { "buffers" },
 				lualine_y = {},
