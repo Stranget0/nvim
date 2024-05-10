@@ -21,7 +21,13 @@ return { {
 		"jvgrootveld/telescope-zoxide"
 	},
 	config = function(_)
-		require("telescope").setup()
+		require("telescope").setup({
+			pickers = {
+				colorscheme = {
+					enable_preview = true
+				}
+			}
+		})
 		-- To get fzf loaded and working with telescope, you need to call
 		-- load_extension, somewhere after setup function:
 		require("telescope").load_extension("fzf")

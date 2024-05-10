@@ -10,6 +10,10 @@
 -- -- Description: Key mapping configs
 -- -- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
 -- -- Close all windows and exit from Neovim with <leader> and q
+
+
+local wk = require("which-key")
+
 -- vim.keymap.set("n", "<leader>q", ":qa!<CR>", {})
 -- -- Fast saving with <leader> and s
 -- vim.keymap.set("n", "<leader>s", ":w<CR>", {})
@@ -20,21 +24,25 @@
 -- vim.keymap.set("n", "<leader>wl", "<C-w>l", {})
 
 -- -- Reload configuration without restart nvim
--- vim.keymap.set("n", "<leader>r", ":so %<CR>", {})
+wk.register("<leader>r", "<cmd>so %<CR>", {})
 
 -- -- Telescope
--- -- <leader> is a space now
--- local builtin = require("telescope.builtin")
--- vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
--- vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
--- vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
--- vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
+wk.register({
+	["<leader>f"] = { name = "+file" },
+	["<leader>ff"] = { "<cmd>Telescope find_files<cr>", "Find File" },
+	["<leader>fr"] = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
+	["<leader>fn"] = { "<cmd>enew<cr>", "New File" },
+})
 
 -- -- NvimTree
--- vim.keymap.set("n", "<leader>n", ":NvimTreeToggle<CR>", {}) -- open/close
--- vim.keymap.set("n", "<leader>nr", ":NvimTreeRefresh<CR>", {}) -- refresh
--- vim.keymap.set("n", "<leader>nf", ":NvimTreeFindFile<CR>", {}) -- search file
+wk.register({
+	["<leader>n"] = { "<cmd>NvimTreeToggle<CR>", "open/close" },
+	["<leader>nr"] = { "<cmd>NvimTreeRefresh<CR>", "refresh" },
+	["<leader>nf"] = { "<cmd>NvimTreeFindFile<CR>", "search file" }
+})
 
 -- -- Terminal
--- vim.keymap.set("n", "<leader>tt", ":NeotermToggle<CR>", {})
--- -- vim.keymap.set("n", "<leader>tx", ":NeotermExit<CR>", {})
+wk.register({
+	["<leader>tt"] = { "<cmd>NeotermToggle<CR>", "toggle terminal" },
+	["<leader>tx"] = { "<cmd>NeotermExit<CR>", "close terminal" },
+})

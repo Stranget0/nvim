@@ -10,6 +10,7 @@
 -- Description: LSP setup and config
 -- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
+
 return { {
 	-- Mason
 	"williamboman/mason.nvim",
@@ -91,6 +92,30 @@ return { {
 	config = function(_, opts)
 		local servers = opts.servers
 		local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+		capabilities.textDocument.foldingRange = {
+			dynamicRegistration = false,
+			lineFoldingOnly = true,
+		}
+
+		-- Diagnostic
+		vim.diagnostic.config({
+			virtual_text = false,
+			virtual_lines = {
+				only_current_line = true,
+			},
+			update_in_insert = false,
+			underline = true,
+			severity_sort = true,
+			float = {
+				focusable = true,
+				border = "rounded",
+				header = "",
+				prefix = "",
+			},
+		})
+
+
 
 		local function setup(server)
 			local server_opts = vim.tbl_deep_extend("force", {

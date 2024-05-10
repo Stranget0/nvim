@@ -117,41 +117,6 @@ for _, plugin in pairs(disabled_built_ins) do
 	g["loaded_" .. plugin] = 1
 end
 
-g.rustaceanvim = {
-	-- Plugin configuration
-	tools = {
-	},
-	-- LSP configuration
-	server = {
-		on_attach = function(client, bufnr)
-			-- you can also put keymaps in here
-			local bufnr = vim.api.nvim_get_current_buf()
-			vim.cmd.RustLsp('renderDiagnostic')
-			vim.cmd.RustLsp('testables')
-
-			vim.keymap.set(
-				"n",
-				"<leader>a",
-				function()
-					vim.cmd.RustLsp('codeAction') -- supports rust-analyzer's grouping
-					-- or vim.lsp.buf.codeAction() if you don't want grouping.
-				end,
-				{ silent = true, buffer = bufnr }
-			)
-		end,
-		default_settings = {
-			-- rust-analyzer language server configuration
-			['rust-analyzer'] = {
-				checkOnSave = { command = "clippy --message-format=json --target-dir=./target-editor/" }
-			},
-		},
-	},
-	-- DAP configuration
-	dap = {
-	},
-}
-
-
 -- Colorscheme
 -- By default, use rose-pine
 cmd.colorscheme("tokyonight")
