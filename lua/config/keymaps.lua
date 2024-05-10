@@ -24,24 +24,20 @@ local wk = require("which-key")
 -- vim.keymap.set("n", "<leader>wl", "<C-w>l", {})
 
 -- -- Reload configuration without restart nvim
-wk.register("<leader>r", "<cmd>so %<CR>", {})
+wk.register({ ["<leader>r"] = { "<cmd>so %<CR>", "reload nvim config" } })
 
--- -- Telescope
+-- Telescope
 wk.register({
+	["<leader>p"] = { name = "+projects" },
+	["<leader>pl"] = { "<cmd>Telescope zoxide list<cr>", "open project list" },
+	["<leader>pa"] = { "<cmd>zoxide add<cr>", "add this dir as project" },
 	["<leader>f"] = { name = "+file" },
-	["<leader>ff"] = { "<cmd>Telescope find_files<cr>", "Find File" },
+	["<leader>ff"] = { "<cmd>Telescope fd<cr>", "Find File" },
 	["<leader>fr"] = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
 	["<leader>fn"] = { "<cmd>enew<cr>", "New File" },
 })
 
--- -- NvimTree
-wk.register({
-	["<leader>n"] = { "<cmd>NvimTreeToggle<CR>", "open/close" },
-	["<leader>nr"] = { "<cmd>NvimTreeRefresh<CR>", "refresh" },
-	["<leader>nf"] = { "<cmd>NvimTreeFindFile<CR>", "search file" }
-})
-
--- -- Terminal
+-- Terminal
 wk.register({
 	["<leader>tt"] = { "<cmd>NeotermToggle<CR>", "toggle terminal" },
 	["<leader>tx"] = { "<cmd>NeotermExit<CR>", "close terminal" },
