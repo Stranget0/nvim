@@ -150,6 +150,10 @@ g.rustaceanvim = {
 	},
 }
 
+
 -- Colorscheme
 -- By default, use rose-pine
 cmd.colorscheme("tokyonight")
+
+vim.cmd.RustLsp('renderDiagnostic')
+vim.cmd.RustLsp('testables')
