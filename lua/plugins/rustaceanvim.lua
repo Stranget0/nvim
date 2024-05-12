@@ -13,25 +13,7 @@ return { {
 				on_attach = function(client, bufnr)
 					-- you can also put keymaps in here
 					vim.cmd.RustLsp('renderDiagnostic')
-					vim.cmd.RustLsp('testables')
 
-
-					-- Diagnostic
-					-- vim.diagnostic.config({
-					-- 	virtual_text = true,
-					-- 	virtual_lines = {
-					-- 		only_current_line = true,
-					-- 	},
-					-- 	update_in_insert = false,
-					-- 	underline = true,
-					-- 	severity_sort = true,
-					-- 	float = {
-					-- 		focusable = true,
-					-- 		border = "rounded",
-					-- 		header = "",
-					-- 		prefix = "",
-					-- 	},
-					-- })
 					local wk = require("which-key")
 
 					local km, l, api = vim.keymap.set, vim.lsp, vim.api

@@ -46,7 +46,8 @@ return { {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	lazy = true,
-	dependencies = { -- Mason
+	dependencies = {
+		-- Mason
 		-- Portable package manager for Neovim that runs everywhere Neovim runs.
 		-- Easily install and manage LSP servers, DAP servers, linters, and formatters.
 		{ "williamboman/mason.nvim" }, { "williamboman/mason-lspconfig.nvim" }, -- Autocomplete
@@ -56,7 +57,18 @@ return { {
 				require("lsp_lines").setup()
 			end,
 		},
-
+		{
+			"roobert/action-hints.nvim",
+			config = function()
+				require("action-hints").setup({
+					template = {
+						definition = { text = " ⊛", color = "#add8e6" },
+						references = { text = " ↱%s", color = "#ff6666" },
+					},
+					use_virtual_text = true,
+				})
+			end,
+		},
 		-- A completion plugin for neovim coded in Lua.
 		{
 			"hrsh7th/nvim-cmp",
