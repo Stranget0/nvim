@@ -50,6 +50,13 @@ return { {
 		-- Portable package manager for Neovim that runs everywhere Neovim runs.
 		-- Easily install and manage LSP servers, DAP servers, linters, and formatters.
 		{ "williamboman/mason.nvim" }, { "williamboman/mason-lspconfig.nvim" }, -- Autocomplete
+		{
+			"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+			config = function()
+				require("lsp_lines").setup()
+			end,
+		},
+
 		-- A completion plugin for neovim coded in Lua.
 		{
 			"hrsh7th/nvim-cmp",

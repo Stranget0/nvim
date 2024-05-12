@@ -17,21 +17,21 @@ return { {
 
 
 					-- Diagnostic
-					vim.diagnostic.config({
-						virtual_text = false,
-						virtual_lines = {
-							only_current_line = true,
-						},
-						update_in_insert = false,
-						underline = true,
-						severity_sort = true,
-						float = {
-							focusable = true,
-							border = "rounded",
-							header = "",
-							prefix = "",
-						},
-					})
+					-- vim.diagnostic.config({
+					-- 	virtual_text = true,
+					-- 	virtual_lines = {
+					-- 		only_current_line = true,
+					-- 	},
+					-- 	update_in_insert = false,
+					-- 	underline = true,
+					-- 	severity_sort = true,
+					-- 	float = {
+					-- 		focusable = true,
+					-- 		border = "rounded",
+					-- 		header = "",
+					-- 		prefix = "",
+					-- 	},
+					-- })
 					local wk = require("which-key")
 
 					local km, l, api = vim.keymap.set, vim.lsp, vim.api

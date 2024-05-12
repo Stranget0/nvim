@@ -28,9 +28,7 @@ local bubbles_theme = {
 	},
 }
 
-local hot = {
-	'Reloader',
-}
+
 
 return { {
 	'nvim-lualine/lualine.nvim',
@@ -72,7 +70,7 @@ return { {
 							return ""
 						end,
 					})
-				end, hot
+				end,
 				},
 				lualine_x = { "buffers" },
 				lualine_y = {},
