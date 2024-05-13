@@ -1,48 +1,59 @@
 return { {
-	'mrcjkb/rustaceanvim',
-	version = '^4', -- Recommended
-	lazy = false,  -- This plugin is already lazy
-	build = ":MasonInstall codelldb",
-	config = function(_, _)
-		vim.g.rustaceanvim = {
-			-- Plugin configuration
-			tools = {
-			},
-			-- LSP configuration
-			server = {
-				on_attach = function(client, bufnr)
-					-- you can also put keymaps in here
-					vim.cmd.RustLsp('renderDiagnostic')
-
-					local wk = require("which-key")
-
-					local km, l, api = vim.keymap.set, vim.lsp, vim.api
-
-					wk.register({
-						["[g"] = { vim.diagnostic.goto_prev, "go prev" },
-						["]g"] = { vim.diagnostic.goto_next, "go next" },
-						["<leader>dd"] = { vim.diagnostic.setqflist, "quick fix list" },
-						["gD"] = { l.buf.declaration, "go declaration" },
-						["gd"] = { l.buf.definition, "go definition" },
-						["gi"] = { l.buf.implementation, "go implementation" },
-						["<leader>D"] = { l.buf.type_definition, "go type" },
-						["gr"] = { l.buf.references, "go references" },
-						["<leader>rn"] = { vim.lsp.buf.rename, "rename" },
-						["L"] = { vim.lsp.buf.hover, "hover info" },
-					}, { buffer = bufnr })
-
-					wk.register({ ["<leader>ca"] = { l.buf.code_action, "code action" }, { buffer = bufnr, mode = { "n", "v" } } })
-				end,
-				default_settings = {
-					-- rust-analyzer language server configuration
-					['rust-analyzer'] = {
-						checkOnSave = { command = "clippy --message-format=json --target-dir=./target-editor/" }
+	"mrcjkb/rustaceanvim",
+	version = "^4", -- Recommended
+	ft = { "rust" },
+	opts = {
+		server = {
+			on_attach = function(_, bufnr)
+				vim.keymap.set("n", "<leader>cR", function()
+					vim.cmd.RustLsp("codeAction")
+				end, { desc = "Code Action", buffer = bufnr })
+				vim.keymap.set("n", "<leader>dr", function()
+					vim.cmd.RustLsp("debuggables")
+				end, { desc = "Rust Debuggables", buffer = bufnr })
+			end,
+			default_settings = {
+				-- rust-analyzer language server configuration
+				["rust-analyzer"] = {
+					cargo = {
+						allFeatures = true,
+						loadOutDirsFromCheck = true,
+						buildScripts = {
+							enable = true,
+						},
+					},
+					-- Add clippy lints for Rust.
+					checkOnSave = {
+						allFeatures = true,
+						command = "clippy",
+						extraArgs = { "--no-deps" },
+					},
+					procMacro = {
+						enable = true,
+						ignored = {
+							["async-trait"] = { "async_trait" },
+							["napi-derive"] = { "napi" },
+							["async-recursion"] = { "async_recursion" },
+						},
 					},
 				},
 			},
-			-- DAP configuration
-			dap = {
-			},
+		},
+	},
+	config = function(_, opts)
+		vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})
+	end,
+
+	dependencies = {
+		{
+			"nvim-neotest/neotest",
+			optional = true,
+			opts = function(_, opts)
+				opts.adapters = opts.adapters or {}
+				vim.list_extend(opts.adapters, {
+					require("rustaceanvim.neotest"),
+				})
+			end,
 		}
-	end
+	}
 } }

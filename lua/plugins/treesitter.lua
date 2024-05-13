@@ -36,7 +36,7 @@ return { {
 	} },
 	opts = {
 		-- A list of parser names, or "all"
-		ensure_installed = { "go", "python", "dockerfile", "json", "yaml", "markdown", "html", "scss", "css", "vim", "wgsl_bevy" },
+		ensure_installed = { "go", "python", "dockerfile", "json", "yaml", "markdown", "html", "scss", "css", "vim", "wgsl_bevy", "rust", "ron", "toml" },
 
 		highlight = {
 			enable = true,
@@ -47,10 +47,6 @@ return { {
 		},
 		autotag = {
 			enable = true
-		},
-		context_commentstring = {
-			enable = true,
-			enable_autocmd = false
 		},
 		refactor = {
 			highlight_definitions = {

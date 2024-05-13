@@ -107,6 +107,25 @@ opt.undoreload = 10000
 opt.foldmethod = "marker"
 opt.foldlevel = 99
 
+vim.diagnostic.config({
+	virtual_text = false,
+	virtual_lines = {
+		only_current_line = true,
+	},
+	update_in_insert = true,
+	underline = true,
+	severity_sort = true,
+	float = {
+		focusable = true,
+		border = "rounded",
+		header = "",
+		prefix = "",
+	},
+})
+
+-- 'JoosepAlviste/nvim-ts-context-commentstring',
+g.skip_ts_context_commentstring_module = true
+
 -- Disable builtin plugins
 local disabled_built_ins = { "2html_plugin", "getscript", "getscriptPlugin", "gzip", "logipat", "netrw", "netrwPlugin",
 	"netrwSettings", "netrwFileHandlers", "matchit", "tar", "tarPlugin", "rrhelper",

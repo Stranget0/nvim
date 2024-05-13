@@ -24,7 +24,7 @@ local wk = require("which-key")
 -- vim.keymap.set("n", "<leader>wl", "<C-w>l", {})
 
 -- -- Reload configuration without restart nvim
-wk.register({ ["<leader>r"] = { "<cmd>so %<CR>", "reload nvim config" } })
+wk.register({ ["<leader>cr"] = { "<cmd>so %<CR>", "reload nvim config" } })
 
 -- Telescope
 wk.register({
@@ -42,3 +42,20 @@ wk.register({
 	["<leader>tt"] = { "<cmd>NeotermToggle<CR>", "toggle terminal" },
 	["<leader>tx"] = { "<cmd>NeotermExit<CR>", "close terminal" },
 })
+
+local wk = require("which-key")
+
+wk.register({
+	["[g"] = { vim.diagnostic.goto_prev, "go prev" },
+	["]g"] = { vim.diagnostic.goto_next, "go next" },
+	["<leader>dd"] = { vim.diagnostic.setqflist, "quick fix list" },
+	["gD"] = { vim.lsp.buf.declaration, "go declaration" },
+	["gd"] = { vim.lsp.buf.definition, "go definition" },
+	["gi"] = { vim.lsp.buf.implementation, "go implementation" },
+	["<leader>D"] = { vim.lsp.buf.type_definition, "go type" },
+	["gr"] = { vim.lsp.buf.references, "go references" },
+	["<leader>rn"] = { vim.lsp.buf.rename, "rename" },
+	["L"] = { vim.lsp.buf.hover, "hover info" },
+}, { buffer = bufnr })
+
+wk.register({ ["<leader>ca"] = { vim.lsp.buf.code_action, "code action" }, { buffer = bufnr, mode = { "n", "v" } } })
