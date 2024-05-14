@@ -13,11 +13,6 @@ return { {
 	-- Telescope
 	-- Find, Filter, Preview, Pick. All lua, all the time.
 	"nvim-telescope/telescope.nvim",
-	extensions = {
-		persisted = {
-			layout_config = { width = 0.55, height = 0.55 }
-		}
-	},
 	config = function(_)
 		require("telescope").setup({
 			pickers = {
@@ -30,7 +25,6 @@ return { {
 		-- load_extension, somewhere after setup function:
 		require("telescope").load_extension("fzf")
 		require("telescope").load_extension('zoxide')
-		require("telescope").load_extension("persisted")
 	end,
 	dependencies = {
 		"nvim-lua/plenary.nvim",
@@ -40,16 +34,6 @@ return { {
 			"nvim-telescope/telescope-fzf-native.nvim",
 			build = "make"
 		},
-		{
-			"olimorris/persisted.nvim",
-			lazy = false, -- make sure the plugin is always loaded at startup
-			config = function()
-				require("persisted").setup({
-					use_git_branch = true,
-					autoload = true,
-				})
-			end
-		}
 	},
 
 } }
