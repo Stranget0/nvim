@@ -6,39 +6,32 @@ return {
 		-- #region lazy loading
 		event = { "BufWritePre" },
 		cmd = { "ConformInfo" },
-		keys = {
-			{
-				-- Customize or remove this keymap to your liking
-				"<leader>f",
-				function()
-					require("conform").format({ async = true, lsp_fallback = true })
-				end,
-				mode = "",
-				desc = "Format buffer",
-			},
-		},
+		keys = require("config.keymaps").static.format,
 		-- #endregion
 
 		opts = {
-			-- #region lazy loading
 			formatters_by_ft = {
 				lua = { "stylua" },
 				python = { "isort", "black" },
 				javascript = { { "prettierd", "prettier" } },
+				typescript = { { "prettierd", "prettier" } },
+				javascriptreact = { { "prettierd", "prettier" } },
+				typescriptreact = { { "prettierd", "prettier" } },
+				rust = { "rustfmt" },
+				toml = { "taplo" },
+				json = { "yq" }
 			},
-
-
-			-- Customize formatters
 			formatters = {
 				shfmt = {
 					prepend_args = { "-i", "2" },
 				},
 			},
+			-- #region lazy loading
 
-			init = function()
-				-- If you want the formatexpr, here is the place to set it
-				vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-			end,
+			-- init = function()
+			-- If you want the formatexpr, here is the place to set it
+			-- vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+			-- end,
 			-- #endregion
 
 			-- #region async format on save

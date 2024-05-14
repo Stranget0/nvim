@@ -126,16 +126,19 @@ vim.diagnostic.config({
 -- 'JoosepAlviste/nvim-ts-context-commentstring',
 g.skip_ts_context_commentstring_module = true
 
+-- lsp line stop jumping the line if errors or warns
+vim.wo.signcolumn = "yes"
+
 -- Disable builtin plugins
 local disabled_built_ins = { "2html_plugin", "getscript", "getscriptPlugin", "gzip", "logipat", "netrw", "netrwPlugin",
 	"netrwSettings", "netrwFileHandlers", "matchit", "tar", "tarPlugin", "rrhelper",
 	"spellfile_plugin", "vimball", "vimballPlugin", "zip", "zipPlugin", "tutor", "rplugin",
 	"synmenu", "optwin", "compiler", "bugreport", "ftplugin" }
 
+
 for _, plugin in pairs(disabled_built_ins) do
 	g["loaded_" .. plugin] = 1
 end
 
 -- Colorscheme
--- By default, use rose-pine
 cmd.colorscheme("oldworld")

@@ -24,17 +24,6 @@ return {
 					package_installed = "󰄳 ",
 					package_uninstalled = " 󰚌"
 				},
-
-				keymaps = {
-					toggle_server_expand = "<CR>",
-					install_server = "i",
-					update_server = "u",
-					check_server_version = "c",
-					update_all_servers = "U",
-					check_outdated_servers = "C",
-					uninstall_server = "X",
-					cancel_installation = "<C-c>"
-				}
 			},
 
 			max_concurrent_installers = 10
@@ -52,25 +41,8 @@ return {
 			-- Mason
 			-- Portable package manager for Neovim that runs everywhere Neovim runs.
 			-- Easily install and manage LSP servers, DAP servers, linters, and formatters.
-			{ "williamboman/mason.nvim" }, { "williamboman/mason-lspconfig.nvim" }, -- Autocomplete
-			{
-				"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-				config = function()
-					require("lsp_lines").setup()
-				end,
-			},
-			{
-				"roobert/action-hints.nvim",
-				config = function()
-					require("action-hints").setup({
-						template = {
-							definition = { text = " ⊛", color = "#add8e6" },
-							references = { text = " ↱%s", color = "#ff6666" },
-						},
-						use_virtual_text = true,
-					})
-				end,
-			},
+			{ "williamboman/mason.nvim" }, { "williamboman/mason-lspconfig.nvim" },
+
 			{
 				"hrsh7th/nvim-cmp",
 				opts = function(_, opts)
@@ -104,15 +76,6 @@ return {
 			}
 		},
 		opts = {
-			-- Automatically format on save
-			autoformat = true,
-			-- options for vim.lsp.buf.format
-			-- `bufnr` and `filter` is handled by the LazyVim formatter,
-			-- but can be also overridden when specified
-			format = {
-				formatting_options = nil,
-				timeout_ms = nil
-			},
 			-- LSP Server Settings
 			servers = {
 				jsonls = {},
@@ -125,19 +88,7 @@ return {
 				wgsl_analyzer = {},
 				rust_analyzer = {},
 				taplo = {
-					keys = {
-						{
-							"K",
-							function()
-								if vim.fn.expand("%:t") == "Cargo.toml" and require("crates").popup_available() then
-									require("crates").show_popup()
-								else
-									vim.lsp.buf.hover()
-								end
-							end,
-							desc = "Show Crate Documentation",
-						},
-					},
+					keys = require("config.keymaps").static.taplo,
 				},
 			},
 			-- you can do any additional lsp server setup here
@@ -156,25 +107,6 @@ return {
 				dynamicRegistration = false,
 				lineFoldingOnly = true,
 			}
-
-			-- Diagnostic
-			vim.diagnostic.config({
-				virtual_text = false,
-				virtual_lines = {
-					only_current_line = true,
-				},
-				update_in_insert = false,
-				underline = true,
-				severity_sort = true,
-				float = {
-					focusable = true,
-					border = "rounded",
-					header = "",
-					prefix = "",
-				},
-			})
-
-
 
 			local function setup(server)
 				local server_opts = vim.tbl_deep_extend("force", {
@@ -225,24 +157,4 @@ return {
 			require("mason-lspconfig").setup_handlers({ setup })
 		end
 	},
-	{
-		"roobert/hoversplit.nvim",
-		config = function()
-			require("hoversplit").setup({
-				key_bindings = {
-					split_remain_focused = "<leader>hs",
-					vsplit_remain_focused = "<leader>hv",
-					split = "<leader>hS",
-					vsplit = "<leader>hV",
-				},
-			})
-		end
-	},
-
-	{
-		'kosayoda/nvim-lightbulb',
-		config = function()
-			require("nvim-lightbulb").setup()
-		end
-	}
 }

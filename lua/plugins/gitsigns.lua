@@ -132,53 +132,7 @@ return { {
 					col = 1
 				},
 				on_attach                         = function(bufnr)
-					local gitsigns = require('gitsigns')
-					local wk = require("which-key")
-
-					local function map(mode, l, r, desc, _opts)
-						opts = _opts or {}
-						opts.buffer = bufnr
-						opts.mode = mode
-						wk.register({ [l] = { r, desc } }, opts)
-					end
-
-					-- Navigation
-					map('n', ']c', function()
-						if vim.wo.diff then
-							vim.cmd.normal({ ']c', bang = true })
-						else
-							gitsigns.nav_hunk('next')
-						end
-					end, "next hunk")
-
-					map('n', '[c', function()
-						if vim.wo.diff then
-							vim.cmd.normal({ '[c', bang = true })
-						else
-							gitsigns.nav_hunk('prev')
-						end
-					end, "prev hunk")
-
-
-					-- Actions
-					wk.register({ ["<leader>g"] = { name = "+git hunk" } })
-
-					map('n', '<leader>gs', gitsigns.stage_hunk, "stage hunk")
-					map('n', '<leader>gr', gitsigns.reset_hunk, "reset hunk")
-					map('v', '<leader>gs', function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "stage hunk")
-					map('v', '<leader>gr', function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "reset hunk")
-					map('n', '<leader>gS', gitsigns.stage_buffer, "stage buffer")
-					map('n', '<leader>gu', gitsigns.undo_stage_hunk, "undo stage hunk")
-					map('n', '<leader>gR', gitsigns.reset_buffer, "reset buffer")
-					map('n', '<leader>gp', gitsigns.preview_hunk, "preview hunk")
-					map('n', '<leader>gb', function() gitsigns.blame_line { full = true } end, "blame line")
-					map('n', '<leader>gtb', gitsigns.toggle_current_line_blame, "toggle current line blame")
-					map('n', '<leader>gd', gitsigns.diffthis, "diffthis")
-					map('n', '<leader>gD', function() gitsigns.diffthis('~') end, "diffthis")
-					map('n', '<leader>gtd', gitsigns.toggle_deleted, "toggle deleted")
-
-					-- Text object
-					map({ 'o', 'x' }, 'gih', ':<C-U>Gitsigns select_hunk<CR>', "select hunk")
+					require("config.keymaps").github(bufnr)
 				end
 			}
 		)

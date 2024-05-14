@@ -1,0 +1,3 @@
+local icons = {}
+
+return icons

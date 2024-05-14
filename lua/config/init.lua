@@ -20,6 +20,9 @@ vim.opt.rtp:prepend(lazypath)
 
 vim.g.mapleader = ","
 vim.opt.termguicolors = true -- enable 24-bit RGB colors
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 
 -- build spec
 local spec = { {
@@ -74,7 +77,7 @@ require("lazy").setup({
 	state = vim.fn.stdpath("state") .. "/lazy/state.json" -- state info for checker and other things
 })
 
-local modules = { "config.autocmds", "config.options", "config.keymaps", "config.custom" }
+local modules = { "config.autocmds", "config.options", "config.keymaps" }
 
 for _, mod in ipairs(modules) do
 	local ok, err = pcall(require, mod)
@@ -83,3 +86,5 @@ for _, mod in ipairs(modules) do
 		error(("Error loading %s...\n\n%s"):format(mod, err))
 	end
 end
+
+require("config.keymaps").common()

@@ -5,12 +5,7 @@ return { {
 	opts = {
 		server = {
 			on_attach = function(_, bufnr)
-				vim.keymap.set("n", "<leader>cR", function()
-					vim.cmd.RustLsp("codeAction")
-				end, { desc = "Code Action", buffer = bufnr })
-				vim.keymap.set("n", "<leader>dr", function()
-					vim.cmd.RustLsp("debuggables")
-				end, { desc = "Rust Debuggables", buffer = bufnr })
+				require("config.keymaps").lsp(bufnr)
 			end,
 			default_settings = {
 				-- rust-analyzer language server configuration
@@ -36,6 +31,39 @@ return { {
 							["async-recursion"] = { "async_recursion" },
 						},
 					},
+
+					inlayHints = {
+						bindingModeHints = {
+							enable = false,
+						},
+						chainingHints = {
+							enable = true,
+						},
+						closingBraceHints = {
+							enable = true,
+							minLines = 25,
+						},
+						closureReturnTypeHints = {
+							enable = "never",
+						},
+						lifetimeElisionHints = {
+							enable = "never",
+							useParameterNames = false,
+						},
+						maxLength = 25,
+						parameterHints = {
+							enable = true,
+						},
+						reborrowHints = {
+							enable = "never",
+						},
+						renderColons = true,
+						typeHints = {
+							enable = true,
+							hideClosureInitialization = false,
+							hideNamedConstructor = false,
+						},
+					},
 				},
 			},
 		},
@@ -48,12 +76,6 @@ return { {
 		{
 			"nvim-neotest/neotest",
 			optional = true,
-			opts = function(_, opts)
-				opts.adapters = opts.adapters or {}
-				vim.list_extend(opts.adapters, {
-					require("rustaceanvim.neotest"),
-				})
-			end,
 		}
 	}
 } }
