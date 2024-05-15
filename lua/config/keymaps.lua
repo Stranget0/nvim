@@ -14,73 +14,50 @@
 
 local keymaps = {
 	common = function()
-		local wk = require("which-key")
-
-		wk.register({
-			-- Telescope
-			["<leader>p"] = { name = "+projects" },
-			["<leader>pl"] = { "<cmd>Telescope zoxide list<cr>", "open project list" },
-			["<leader>pa"] = { "<cmd>zoxide add<cr>", "add as project" },
-			["<leader>f"] = { name = "+file" },
-			["<leader>ff"] = { "<cmd>Telescope fd<cr>", "Find File" },
-			["<leader>fr"] = { "<cmd>Telescope oldfiles<cr>", "Open Recent" },
-			["<leader>fn"] = { "<cmd>enew<cr>", "New" },
-
-			-- reload
-			["<leader>cr"] = { "<cmd>so %<CR>", "reload nvim config" }
-		})
+		vim.keymap.set("n", "<leader>pl", "<cmd>Telescope zoxide list<cr>", { desc = "open project list" })
+		vim.keymap.set("n", "<leader>pa", "<cmd>zoxide add<cr>", { desc = "add as project" })
+		vim.keymap.set("n", "<leader>ff", "<cmd>Telescope fd<cr>", { desc = "Find File" })
+		vim.keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Open Recent" })
+		vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New" })
+		vim.keymap.set("n", "<leader>cr", "<cmd>so %<CR>", { desc = "reload nvim config" })
 	end,
 
 	lsp = function(bufnr)
-		local wk = require("which-key")
-
-		vim.keymap.set("n", "<leader>cR", function()
-			vim.cmd.RustLsp("codeAction")
-		end, { desc = "Code Action", buffer = bufnr })
-		vim.keymap.set("n", "<leader>dr", function()
-			vim.cmd.RustLsp("debuggables")
-		end, { desc = "Rust Debuggables", buffer = bufnr })
-
-
-		wk.register({
-			["[g"] = { vim.diagnostic.goto_prev, "go prev" },
-			["]g"] = { vim.diagnostic.goto_next, "go next" },
-			["<leader>dd"] = { vim.diagnostic.setqflist, "quick fix list" },
-			["gD"] = { vim.lsp.buf.declaration, "go declaration" },
-			["gd"] = { vim.lsp.buf.definition, "go definition" },
-			["gi"] = { vim.lsp.buf.implementation, "go implementation" },
-			["<leader>D"] = { vim.lsp.buf.type_definition, "go type" },
-			["gr"] = { vim.lsp.buf.references, "go references" },
-			["<leader>rn"] = { vim.lsp.buf.rename, "rename" },
-			["L"] = { vim.lsp.buf.hover, "hover info" },
-		}, { buffer = bufnr })
-
-
-		wk.register({ ["<leader>ca"] = { vim.lsp.buf.code_action, "code action" }, { buffer = bufnr, mode = { "n", "v" } } })
+		vim.keymap.set("n", "[g", vim.diagnostic.goto_prev, { desc = "go prev", buffer = bufnr })
+		vim.keymap.set("n", "]g", vim.diagnostic.goto_next, { desc = "go next", buffer = bufnr })
+		vim.keymap.set("n", "<leader>dd", vim.diagnostic.setqflist, { desc = "quick fix list", buffer = bufnr })
+		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "go declaration", buffer = bufnr })
+		vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "go definition", buffer = bufnr })
+		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "go implementation", buffer = bufnr })
+		vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, { desc = "go type", buffer = bufnr })
+		vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "go references", buffer = bufnr })
+		vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "rename", buffer = bufnr })
+		vim.keymap.set("n", "L", vim.lsp.buf.hover, { desc = "hover info", buffer = bufnr })
+		vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "code action", buffer = bufnr })
 	end,
 
 	rust_lsp = function(bufnr)
-		local wk = require("which_key")
-
-		wk.register({
-			["<leader>cR"] = { function()
+		vim.keymap.set("n", "<leader>cR",
+			function()
 				vim.cmd.RustLsp("codeAction")
-			end, "code action" },
-			["<leader>dr"] = { function()
+			end,
+			{ desc = "code action", buffer = bufnr })
+
+		vim.keymap.set("n", "<leader>dr",
+			function()
 				vim.cmd.RustLsp("debuggables")
-			end, "rust debuggables" }
-		}, { buffer = bufnr })
+			end,
+			{ desc = "rust debuggables", buffer = bufnr })
 	end,
 
 	github = function(bufnr)
 		local gitsigns = require('gitsigns')
-		local wk = require("which-key")
 
 		local function map(mode, l, r, desc, _opts)
 			local opts = _opts or {}
 			opts.buffer = bufnr
-			opts.mode = mode
-			wk.register({ [l] = { r, desc } }, opts)
+			opts.desc = desc
+			vim.keymap.set(mode, l, r, opts)
 		end
 
 		-- Navigation
@@ -102,8 +79,6 @@ local keymaps = {
 
 
 		-- Actions
-		wk.register({ ["<leader>g"] = { name = "+git" } })
-
 		map('n', '<leader>gs', gitsigns.stage_hunk, "stage hunk")
 		map('n', '<leader>gr', gitsigns.reset_hunk, "reset hunk")
 		map('v', '<leader>gs', function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "stage hunk")
@@ -123,7 +98,6 @@ local keymaps = {
 	end,
 
 	file_tree = function(bufnr)
-		local wk = require("wk")
 		local api = require('nvim-tree.api')
 
 		local function opts(desc)
@@ -191,23 +165,19 @@ local keymaps = {
 	end,
 
 	testing = function()
-		local wk = require("which_key")
 		local test = require("neotest").run
 
-		wk.register({
-			["<leader>t"] = { name = "+test" },
-			["<leader>tt"] = { test.run, "run nearest" },
-			["<leader>tf"] = {
-				function()
-					test.run(vim.fn.expand("%"))
-				end,
-				"run in file"
-			},
-			["<leader>ts"] = {
-				test.stop,
-				"stop nearest test"
-			},
-		})
+		vim.keymap.set("n", "<leader>tt", test.run, { desc = "run nearest test" })
+
+		vim.keymap.set("n", "<leader>tf",
+			function()
+				test.run(vim.fn.expand("%"))
+			end,
+			{ desc = "run tests in file" })
+
+		vim.keymap.set("<leader>ts",
+			test.stop,
+			{ desc = "stop nearest test" })
 		-- Run the nearest test
 		-- require("neotest").run.run()
 
@@ -227,8 +197,6 @@ local keymaps = {
 	end,
 
 	comment = function()
-		-- require("which_key").register({ ["g"] = { name = "+comment" } })
-
 		return {
 			-- Toggle comment (like `gcip` - comment inner paragraph) for both
 			-- Normal and Visual modes
