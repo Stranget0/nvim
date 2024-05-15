@@ -79,7 +79,7 @@ return {
 			-- #region sessions
 			require("mini.sessions").setup(
 				{
-					autoread = true,
+					-- autoread = true,
 
 					-- Directory where global sessions are stored (use `''` to disable)
 					directory = "nvim_sessions",

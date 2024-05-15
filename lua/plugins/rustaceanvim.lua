@@ -6,6 +6,7 @@ return { {
 		server = {
 			on_attach = function(_, bufnr)
 				require("config.keymaps").lsp(bufnr)
+				require("config.keymaps").rust_lsp(bufnr)
 			end,
 			default_settings = {
 				-- rust-analyzer language server configuration

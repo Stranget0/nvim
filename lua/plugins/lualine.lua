@@ -29,6 +29,23 @@ local bubbles_theme = {
 }
 
 
+local separators = {
+	left = { left = '' },
+	right = { right = '' },
+	both = { left = '', right = '' }
+}
+
+local with_left = function(element)
+	return { element, separator = separators.left, right_padding = 2 }
+end
+
+local with_right = function(element)
+	return { element, separator = separators.right, left_padding = 2 }
+end
+
+local with_both = function(element)
+	return { element, separator = separators.both }
+end
 
 return { {
 	'nvim-lualine/lualine.nvim',
@@ -50,10 +67,10 @@ return { {
 			options = {
 				theme = bubbles_theme,
 				component_separators = '',
-				section_separators = { left = '', right = '' },
+				section_separators = separators.both,
 			},
 			sections = {
-				lualine_a = { { 'mode', separator = { left = '' }, right_padding = 2 } },
+				lualine_a = { with_left("mode") },
 				lualine_b = { 'filename', "diagnostics", "searchcount" },
 				lualine_c = {
 					'%=', function()
@@ -72,10 +89,10 @@ return { {
 					})
 				end,
 				},
-				lualine_x = { "buffers" },
+				lualine_x = {},
 				lualine_y = {},
 				lualine_z = {
-					{ 'location', separator = { right = '' }, left_padding = 2 },
+					with_right("location"),
 				},
 			},
 			inactive_sections = {

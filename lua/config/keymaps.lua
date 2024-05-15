@@ -25,29 +25,29 @@ local keymaps = {
 	lsp = function(bufnr)
 		vim.keymap.set("n", "[g", vim.diagnostic.goto_prev, { desc = "go prev", buffer = bufnr })
 		vim.keymap.set("n", "]g", vim.diagnostic.goto_next, { desc = "go next", buffer = bufnr })
-		vim.keymap.set("n", "<leader>dd", vim.diagnostic.setqflist, { desc = "quick fix list", buffer = bufnr })
+		vim.keymap.set("n", "<leader>qf", vim.diagnostic.setqflist, { desc = "quick fix list", buffer = bufnr })
 		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "go declaration", buffer = bufnr })
 		vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "go definition", buffer = bufnr })
 		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "go implementation", buffer = bufnr })
 		vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, { desc = "go type", buffer = bufnr })
 		vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "go references", buffer = bufnr })
-		vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "rename", buffer = bufnr })
+		vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { desc = "rename", buffer = bufnr })
 		vim.keymap.set("n", "L", vim.lsp.buf.hover, { desc = "hover info", buffer = bufnr })
 		vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "code action", buffer = bufnr })
 	end,
 
 	rust_lsp = function(bufnr)
-		vim.keymap.set("n", "<leader>cR",
+		vim.keymap.set("n", "<leader>ca",
 			function()
 				vim.cmd.RustLsp("codeAction")
 			end,
-			{ desc = "code action", buffer = bufnr })
+			{ desc = "code action", buffer = bufnr, silent = true })
 
 		vim.keymap.set("n", "<leader>dr",
 			function()
 				vim.cmd.RustLsp("debuggables")
 			end,
-			{ desc = "rust debuggables", buffer = bufnr })
+			{ desc = "rust debuggables", buffer = bufnr, silent = true })
 	end,
 
 	github = function(bufnr)
