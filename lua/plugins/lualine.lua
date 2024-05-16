@@ -32,7 +32,8 @@ local bubbles_theme = {
 local separators = {
 	left = { left = '' },
 	right = { right = '' },
-	both = { left = '', right = '' }
+	both_inv = { left = '', right = '' },
+	both = { right = '', left = '' }
 }
 
 local with_left = function(element)
@@ -67,7 +68,7 @@ return { {
 			options = {
 				theme = bubbles_theme,
 				component_separators = '',
-				section_separators = separators.both,
+				section_separators = separators.both_inv,
 			},
 			sections = {
 				lualine_a = { with_left("mode") },
@@ -92,7 +93,7 @@ return { {
 				lualine_x = {},
 				lualine_y = {},
 				lualine_z = {
-					with_right("location"),
+					with_both("location"),
 				},
 			},
 			inactive_sections = {

@@ -11,43 +11,135 @@
 -- -- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
 -- -- Close all windows and exit from Neovim with <leader> and q
 
+local keys = {
+	project_list = "<leader>pl",
+	project_add = "<leader>pa",
+	find_file = "<leader>ff",
+	old_files = "<leader>fr",
+	new_file = "<leader>fn",
+
+	next_diagnostic = "g[",
+	prev_diagnostic = "g]",
+	diagnostic_list = "<leader>cd",
+	go_definition = "gd",
+	go_type = "gt",
+	go_references = "gr",
+	rename = "<leader>cr",
+	code_action = "<leader>ca",
+	hover_info = "K",
+	open_docs = "<leader>td",
+
+	prev_git_hunk = "h[",
+	next_git_hunk = "h]",
+	stage_hunk = '<leader>gs',
+	reset_hunk = '<leader>gr',
+	stage_buffer = '<leader>gS',
+	undo_stage_hunk = '<leader>gu',
+	reset_buffer_hunks = '<leader>gR',
+	preview_hunk = '<leader>gp',
+	blame_line = '<leader>gb',
+	blame_line_toggle = '<leader>gtb',
+	diffthis = '<leader>gd',
+	diffthis_tilde = '<leader>gD',
+	toggle_deleted_hunk = '<leader>gtd',
+	select_hunk = 'gih',
+
+	cmp_confirm = '<Enter>',
+	cmp_trigger = '<C-Space>',
+	cmp_scroll_up = '<C-u>',
+	cmp_scroll_down = '<C-d>',
+	cmp_jump_forward = '<C-f>',
+	cmp_jump_backward = '<C-b>',
+
+	run_nearest_test = "<leader>tt",
+	run_tests_in_file = "<leader>tf",
+	stop_nearest_test = "<leader>ts",
+
+	comment = '<C-.>',
+	comment_line = '<C-/>',
+	comment_visual = '<C-/>',
+	comment_textobject = '<C-/>',
+
+
+	surrounding_add = 'sa',
+	surrounding_delete = 'sd',
+	surrounding_find = 'sf',
+	surrounding_find_left = 'sF',
+	surrounding_highlight = 'sh',
+	surrounding_replace = 'sr',
+	surrounding_update_n_lines = 'sn',
+
+	surrounding_suffix_last = 'l',
+	surrounding_suffix_next = 'n',
+
+	operators_evaluate = "g=",
+	operators_exchange = "gx",
+	operators_multiply = "gm",
+	operators_replace = "gr",
+	operators_sort = "gs",
+
+	ai_around = 'a',
+	ai_inside = 'i',
+	ai_around_next = 'an',
+	ai_inside_next = 'in',
+	ai_around_last = 'al',
+	ai_inside_last = 'il',
+	ai_goto_left = 'g[',
+	ai_goto_right = 'g]',
+
+	notifications_history = "<leader>nh",
+	notifications_clear = "<leader>nd",
+
+	folds_open_all = 'zR',
+	folds_close_all = 'zM',
+
+	docs_split_remain_focused = "<leader>hs",
+	docs_vsplit_remain_focused = "<leader>hv",
+	docs_split = "<leader>hS",
+	docs_vsplit = "<leader>hV",
+
+	format_buffer = "<leader>f",
+}
+
 
 local keymaps = {
 	common = function()
-		vim.keymap.set("n", "<leader>pl", "<cmd>Telescope zoxide list<cr>", { desc = "open project list" })
-		vim.keymap.set("n", "<leader>pa", "<cmd>zoxide add<cr>", { desc = "add as project" })
-		vim.keymap.set("n", "<leader>ff", "<cmd>Telescope fd<cr>", { desc = "Find File" })
-		vim.keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Open Recent" })
-		vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New" })
-		vim.keymap.set("n", "<leader>cr", "<cmd>so %<CR>", { desc = "reload nvim config" })
+		vim.keymap.set("n", keys.project_list, "<cmd>Telescope zoxide list<cr>", { desc = "open project list" })
+		vim.keymap.set("n", keys.project_add, "<cmd>zoxide add<cr>", { desc = "add as project" })
+		vim.keymap.set("n", keys.find_file, "<cmd>Telescope fd<cr>", { desc = "Find File" })
+		vim.keymap.set("n", keys.old_files, "<cmd>Telescope oldfiles<cr>", { desc = "Open Recent" })
+		vim.keymap.set("n", keys.new_file, "<cmd>enew<cr>", { desc = "New" })
 	end,
 
 	lsp = function(bufnr)
-		vim.keymap.set("n", "[g", vim.diagnostic.goto_prev, { desc = "go prev", buffer = bufnr })
-		vim.keymap.set("n", "]g", vim.diagnostic.goto_next, { desc = "go next", buffer = bufnr })
-		vim.keymap.set("n", "<leader>qf", vim.diagnostic.setqflist, { desc = "quick fix list", buffer = bufnr })
-		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "go declaration", buffer = bufnr })
-		vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "go definition", buffer = bufnr })
-		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "go implementation", buffer = bufnr })
-		vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, { desc = "go type", buffer = bufnr })
-		vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "go references", buffer = bufnr })
-		vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { desc = "rename", buffer = bufnr })
-		vim.keymap.set("n", "L", vim.lsp.buf.hover, { desc = "hover info", buffer = bufnr })
-		vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "code action", buffer = bufnr })
+		vim.keymap.set("n", keys.next_diagnostic, vim.diagnostic.goto_prev, { desc = "go prev diagnostic", buffer = bufnr })
+		vim.keymap.set("n", keys.prev_diagnostic, vim.diagnostic.goto_next, { desc = "go next diagnostic", buffer = bufnr })
+		vim.keymap.set("n", keys.diagnostic_list, "<cmd>Telescope diagnostics<cr>", { desc = "diagnostics", buffer = bufnr })
+		-- vim.keymap.set("n", "<leader>qf", vim.diagnostic.setqflist, { desc = "quick fix list", buffer = bufnr })
+		-- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "go declaration", buffer = bufnr })
+		vim.keymap.set("n", keys.go_definition, "<cmd>Telescope lsp_definitions<cr>",
+			{ desc = "go definition", buffer = bufnr })
+		-- vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "go implementation", buffer = bufnr })
+		vim.keymap.set("n", keys.go_type, "<cmd>Telescope lsp_type_definitions<cr>", { desc = "go type", buffer = bufnr })
+		vim.keymap.set("n", keys.go_references, "<cmd>Telescope lsp_references<cr>",
+			{ desc = "go references", buffer = bufnr })
+		vim.keymap.set("n", keys.rename, vim.lsp.buf.rename, { desc = "rename", buffer = bufnr })
+		vim.keymap.set("n", keys.hover_info, vim.lsp.buf.hover, { desc = "hover info", buffer = bufnr })
+		vim.keymap.set({ "n", "v" }, keys.code_action, vim.lsp.buf.code_action, { desc = "code action", buffer = bufnr })
 	end,
 
 	rust_lsp = function(bufnr)
-		vim.keymap.set("n", "<leader>ca",
+		vim.keymap.set("n", keys.code_action,
 			function()
 				vim.cmd.RustLsp("codeAction")
 			end,
 			{ desc = "code action", buffer = bufnr, silent = true })
 
-		vim.keymap.set("n", "<leader>dr",
+		vim.keymap.set("n", keys.hover_info,
 			function()
-				vim.cmd.RustLsp("debuggables")
-			end,
-			{ desc = "rust debuggables", buffer = bufnr, silent = true })
+				vim.cmd.RustLsp { 'hover', 'actions' }
+			end
+		)
 	end,
 
 	github = function(bufnr)
@@ -61,7 +153,7 @@ local keymaps = {
 		end
 
 		-- Navigation
-		map('n', ']c', function()
+		map('n', keys.next_git_hunk, function()
 			if vim.wo.diff then
 				vim.cmd.normal({ ']c', bang = true })
 			else
@@ -69,7 +161,7 @@ local keymaps = {
 			end
 		end, "next hunk")
 
-		map('n', '[c', function()
+		map('n', keys.prev_git_hunk, function()
 			if vim.wo.diff then
 				vim.cmd.normal({ '[c', bang = true })
 			else
@@ -79,22 +171,22 @@ local keymaps = {
 
 
 		-- Actions
-		map('n', '<leader>gs', gitsigns.stage_hunk, "stage hunk")
-		map('n', '<leader>gr', gitsigns.reset_hunk, "reset hunk")
-		map('v', '<leader>gs', function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "stage hunk")
-		map('v', '<leader>gr', function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "reset hunk")
-		map('n', '<leader>gS', gitsigns.stage_buffer, "stage buffer")
-		map('n', '<leader>gu', gitsigns.undo_stage_hunk, "undo stage hunk")
-		map('n', '<leader>gR', gitsigns.reset_buffer, "reset buffer")
-		map('n', '<leader>gp', gitsigns.preview_hunk, "preview hunk")
-		map('n', '<leader>gb', function() gitsigns.blame_line { full = true } end, "blame line")
-		map('n', '<leader>gtb', gitsigns.toggle_current_line_blame, "toggle current line blame")
-		map('n', '<leader>gd', gitsigns.diffthis, "diffthis")
-		map('n', '<leader>gD', function() gitsigns.diffthis('~') end, "diffthis")
-		map('n', '<leader>gtd', gitsigns.toggle_deleted, "toggle deleted")
+		map('n', keys.stage_hunk, gitsigns.stage_hunk, "stage hunk")
+		map('n', keys.reset_hunk, gitsigns.reset_hunk, "reset hunk")
+		-- map('v', keys.stage_hunk, function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "stage hunk")
+		-- map('v', keys.reset_hunk, function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "reset hunk")
+		map('n', keys.stage_buffer, gitsigns.stage_buffer, "stage buffer")
+		map('n', keys.undo_stage_hunk, gitsigns.undo_stage_hunk, "undo stage hunk")
+		map('n', keys.reset_buffer_hunks, gitsigns.reset_buffer, "reset buffer")
+		map('n', keys.preview_hunk, gitsigns.preview_hunk, "preview hunk")
+		map('n', keys.blame_line, function() gitsigns.blame_line { full = true } end, "blame line")
+		map('n', keys.blame_line_toggle, gitsigns.toggle_current_line_blame, "toggle current line blame")
+		map('n', keys.diffthis, gitsigns.diffthis, "diffthis")
+		map('n', keys.diffthis_tilde, function() gitsigns.diffthis('~') end, "diffthis")
+		map('n', keys.toggle_deleted_hunk, gitsigns.toggle_deleted, "toggle deleted")
 
 		-- Text object
-		map({ 'o', 'x' }, 'gih', ':<C-U>Gitsigns select_hunk<CR>', "select hunk")
+		map({ 'o', 'x' }, keys.select_hunk, ':<C-U>Gitsigns select_hunk<CR>', "select hunk")
 	end,
 
 	file_tree = function(bufnr)
@@ -104,78 +196,78 @@ local keymaps = {
 			return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
 		end
 
-		vim.keymap.set('n', '<C-]>', api.tree.change_root_to_node, opts('CD'))
-		vim.keymap.set('n', '<C-e>', api.node.open.replace_tree_buffer, opts('Open: In Place'))
-		vim.keymap.set('n', '<C-k>', api.node.show_info_popup, opts('Info'))
-		vim.keymap.set('n', '<C-r>', api.fs.rename_sub, opts('Rename: Omit Filename'))
-		vim.keymap.set('n', '<C-t>', api.node.open.tab, opts('Open: New Tab'))
-		vim.keymap.set('n', '<C-v>', api.node.open.vertical, opts('Open: Vertical Split'))
-		vim.keymap.set('n', '<C-x>', api.node.open.horizontal, opts('Open: Horizontal Split'))
-		vim.keymap.set('n', '<BS>', api.node.navigate.parent_close, opts('Close Directory'))
-		vim.keymap.set('n', '<CR>', api.node.open.edit, opts('Open'))
-		vim.keymap.set('n', '<Tab>', api.node.open.preview, opts('Open Preview'))
-		vim.keymap.set('n', '>', api.node.navigate.sibling.next, opts('Next Sibling'))
-		vim.keymap.set('n', '<', api.node.navigate.sibling.prev, opts('Previous Sibling'))
-		vim.keymap.set('n', '.', api.node.run.cmd, opts('Run Command'))
-		vim.keymap.set('n', '-', api.tree.change_root_to_parent, opts('Up'))
-		vim.keymap.set('n', 'a', api.fs.create, opts('Create File Or Directory'))
-		vim.keymap.set('n', 'bd', api.marks.bulk.delete, opts('Delete Bookmarked'))
-		vim.keymap.set('n', 'bt', api.marks.bulk.trash, opts('Trash Bookmarked'))
-		vim.keymap.set('n', 'bmv', api.marks.bulk.move, opts('Move Bookmarked'))
-		vim.keymap.set('n', 'B', api.tree.toggle_no_buffer_filter, opts('Toggle Filter: No Buffer'))
-		vim.keymap.set('n', 'c', api.fs.copy.node, opts('Copy'))
-		vim.keymap.set('n', 'C', api.tree.toggle_git_clean_filter, opts('Toggle Filter: Git Clean'))
-		vim.keymap.set('n', '[c', api.node.navigate.git.prev, opts('Prev Git'))
-		vim.keymap.set('n', ']c', api.node.navigate.git.next, opts('Next Git'))
-		vim.keymap.set('n', 'd', api.fs.remove, opts('Delete'))
-		vim.keymap.set('n', 'D', api.fs.trash, opts('Trash'))
-		vim.keymap.set('n', 'E', api.tree.expand_all, opts('Expand All'))
-		vim.keymap.set('n', 'e', api.fs.rename_basename, opts('Rename: Basename'))
-		vim.keymap.set('n', ']e', api.node.navigate.diagnostics.next, opts('Next Diagnostic'))
-		vim.keymap.set('n', '[e', api.node.navigate.diagnostics.prev, opts('Prev Diagnostic'))
-		vim.keymap.set('n', 'F', api.live_filter.clear, opts('Live Filter: Clear'))
-		vim.keymap.set('n', 'f', api.live_filter.start, opts('Live Filter: Start'))
-		vim.keymap.set('n', 'g?', api.tree.toggle_help, opts('Help'))
-		vim.keymap.set('n', 'gy', api.fs.copy.absolute_path, opts('Copy Absolute Path'))
-		vim.keymap.set('n', 'ge', api.fs.copy.basename, opts('Copy Basename'))
-		vim.keymap.set('n', 'H', api.tree.toggle_hidden_filter, opts('Toggle Filter: Dotfiles'))
-		vim.keymap.set('n', 'I', api.tree.toggle_gitignore_filter, opts('Toggle Filter: Git Ignore'))
-		vim.keymap.set('n', 'J', api.node.navigate.sibling.last, opts('Last Sibling'))
-		vim.keymap.set('n', 'K', api.node.navigate.sibling.first, opts('First Sibling'))
-		vim.keymap.set('n', 'L', api.node.open.toggle_group_empty, opts('Toggle Group Empty'))
-		vim.keymap.set('n', 'M', api.tree.toggle_no_bookmark_filter, opts('Toggle Filter: No Bookmark'))
-		vim.keymap.set('n', 'm', api.marks.toggle, opts('Toggle Bookmark'))
-		vim.keymap.set('n', 'o', api.node.open.edit, opts('Open'))
-		vim.keymap.set('n', 'O', api.node.open.no_window_picker, opts('Open: No Window Picker'))
-		vim.keymap.set('n', 'p', api.fs.paste, opts('Paste'))
-		vim.keymap.set('n', 'P', api.node.navigate.parent, opts('Parent Directory'))
-		vim.keymap.set('n', 'q', api.tree.close, opts('Close'))
-		vim.keymap.set('n', 'r', api.fs.rename, opts('Rename'))
-		vim.keymap.set('n', 'R', api.tree.reload, opts('Refresh'))
-		vim.keymap.set('n', 's', api.node.run.system, opts('Run System'))
-		vim.keymap.set('n', 'S', api.tree.search_node, opts('Search'))
-		vim.keymap.set('n', 'u', api.fs.rename_full, opts('Rename: Full Path'))
-		vim.keymap.set('n', 'U', api.tree.toggle_custom_filter, opts('Toggle Filter: Hidden'))
-		vim.keymap.set('n', 'W', api.tree.collapse_all, opts('Collapse'))
-		vim.keymap.set('n', 'x', api.fs.cut, opts('Cut'))
-		vim.keymap.set('n', 'y', api.fs.copy.filename, opts('Copy Name'))
-		vim.keymap.set('n', 'Y', api.fs.copy.relative_path, opts('Copy Relative Path'))
-		vim.keymap.set('n', '<2-LeftMouse>', api.node.open.edit, opts('Open'))
-		vim.keymap.set('n', '<2-RightMouse>', api.tree.change_root_to_node, opts('CD'))
+		-- vim.keymap.set('n', '<C-]>', api.tree.change_root_to_node, opts('CD'))
+		-- vim.keymap.set('n', '<C-e>', api.node.open.replace_tree_buffer, opts('Open: In Place'))
+		-- vim.keymap.set('n', '<C-k>', api.node.show_info_popup, opts('Info'))
+		-- vim.keymap.set('n', '<C-r>', api.fs.rename_sub, opts('Rename: Omit Filename'))
+		-- vim.keymap.set('n', '<C-t>', api.node.open.tab, opts('Open: New Tab'))
+		-- vim.keymap.set('n', '<C-v>', api.node.open.vertical, opts('Open: Vertical Split'))
+		-- vim.keymap.set('n', '<C-x>', api.node.open.horizontal, opts('Open: Horizontal Split'))
+		-- vim.keymap.set('n', '<BS>', api.node.navigate.parent_close, opts('Close Directory'))
+		-- vim.keymap.set('n', '<CR>', api.node.open.edit, opts('Open'))
+		-- vim.keymap.set('n', '<Tab>', api.node.open.preview, opts('Open Preview'))
+		-- vim.keymap.set('n', '>', api.node.navigate.sibling.next, opts('Next Sibling'))
+		-- vim.keymap.set('n', '<', api.node.navigate.sibling.prev, opts('Previous Sibling'))
+		-- vim.keymap.set('n', '.', api.node.run.cmd, opts('Run Command'))
+		-- vim.keymap.set('n', '-', api.tree.change_root_to_parent, opts('Up'))
+		-- vim.keymap.set('n', 'a', api.fs.create, opts('Create File Or Directory'))
+		-- vim.keymap.set('n', 'bd', api.marks.bulk.delete, opts('Delete Bookmarked'))
+		-- vim.keymap.set('n', 'bt', api.marks.bulk.trash, opts('Trash Bookmarked'))
+		-- vim.keymap.set('n', 'bmv', api.marks.bulk.move, opts('Move Bookmarked'))
+		-- vim.keymap.set('n', 'B', api.tree.toggle_no_buffer_filter, opts('Toggle Filter: No Buffer'))
+		-- vim.keymap.set('n', 'c', api.fs.copy.node, opts('Copy'))
+		-- vim.keymap.set('n', 'C', api.tree.toggle_git_clean_filter, opts('Toggle Filter: Git Clean'))
+		-- vim.keymap.set('n', '[c', api.node.navigate.git.prev, opts('Prev Git'))
+		-- vim.keymap.set('n', ']c', api.node.navigate.git.next, opts('Next Git'))
+		-- vim.keymap.set('n', 'd', api.fs.remove, opts('Delete'))
+		-- vim.keymap.set('n', 'D', api.fs.trash, opts('Trash'))
+		-- vim.keymap.set('n', 'E', api.tree.expand_all, opts('Expand All'))
+		-- vim.keymap.set('n', 'e', api.fs.rename_basename, opts('Rename: Basename'))
+		-- vim.keymap.set('n', ']e', api.node.navigate.diagnostics.next, opts('Next Diagnostic'))
+		-- vim.keymap.set('n', '[e', api.node.navigate.diagnostics.prev, opts('Prev Diagnostic'))
+		-- vim.keymap.set('n', 'F', api.live_filter.clear, opts('Live Filter: Clear'))
+		-- vim.keymap.set('n', 'f', api.live_filter.start, opts('Live Filter: Start'))
+		-- vim.keymap.set('n', 'g?', api.tree.toggle_help, opts('Help'))
+		-- vim.keymap.set('n', 'gy', api.fs.copy.absolute_path, opts('Copy Absolute Path'))
+		-- vim.keymap.set('n', 'ge', api.fs.copy.basename, opts('Copy Basename'))
+		-- vim.keymap.set('n', 'H', api.tree.toggle_hidden_filter, opts('Toggle Filter: Dotfiles'))
+		-- vim.keymap.set('n', 'I', api.tree.toggle_gitignore_filter, opts('Toggle Filter: Git Ignore'))
+		-- vim.keymap.set('n', 'J', api.node.navigate.sibling.last, opts('Last Sibling'))
+		-- vim.keymap.set('n', 'K', api.node.navigate.sibling.first, opts('First Sibling'))
+		-- vim.keymap.set('n', 'L', api.node.open.toggle_group_empty, opts('Toggle Group Empty'))
+		-- vim.keymap.set('n', 'M', api.tree.toggle_no_bookmark_filter, opts('Toggle Filter: No Bookmark'))
+		-- vim.keymap.set('n', 'm', api.marks.toggle, opts('Toggle Bookmark'))
+		-- vim.keymap.set('n', 'o', api.node.open.edit, opts('Open'))
+		-- vim.keymap.set('n', 'O', api.node.open.no_window_picker, opts('Open: No Window Picker'))
+		-- vim.keymap.set('n', 'p', api.fs.paste, opts('Paste'))
+		-- vim.keymap.set('n', 'P', api.node.navigate.parent, opts('Parent Directory'))
+		-- vim.keymap.set('n', 'q', api.tree.close, opts('Close'))
+		-- vim.keymap.set('n', 'r', api.fs.rename, opts('Rename'))
+		-- vim.keymap.set('n', 'R', api.tree.reload, opts('Refresh'))
+		-- vim.keymap.set('n', 's', api.node.run.system, opts('Run System'))
+		-- vim.keymap.set('n', 'S', api.tree.search_node, opts('Search'))
+		-- vim.keymap.set('n', 'u', api.fs.rename_full, opts('Rename: Full Path'))
+		-- vim.keymap.set('n', 'U', api.tree.toggle_custom_filter, opts('Toggle Filter: Hidden'))
+		-- vim.keymap.set('n', 'W', api.tree.collapse_all, opts('Collapse'))
+		-- vim.keymap.set('n', 'x', api.fs.cut, opts('Cut'))
+		-- vim.keymap.set('n', 'y', api.fs.copy.filename, opts('Copy Name'))
+		-- vim.keymap.set('n', 'Y', api.fs.copy.relative_path, opts('Copy Relative Path'))
+		-- vim.keymap.set('n', '<2-LeftMouse>', api.node.open.edit, opts('Open'))
+		-- vim.keymap.set('n', '<2-RightMouse>', api.tree.change_root_to_node, opts('CD'))
 	end,
 
 	testing = function()
 		local test = require("neotest").run
 
-		vim.keymap.set("n", "<leader>tt", test.run, { desc = "run nearest test" })
+		vim.keymap.set("n", keys.run_nearest_test, test.run, { desc = "run nearest test" })
 
-		vim.keymap.set("n", "<leader>tf",
+		vim.keymap.set("n", keys.run_tests_in_file,
 			function()
 				test.run(vim.fn.expand("%"))
 			end,
 			{ desc = "run tests in file" })
 
-		vim.keymap.set("<leader>ts",
+		vim.keymap.set(keys.stop_nearest_test,
 			test.stop,
 			{ desc = "stop nearest test" })
 		-- Run the nearest test
@@ -200,67 +292,94 @@ local keymaps = {
 		return {
 			-- Toggle comment (like `gcip` - comment inner paragraph) for both
 			-- Normal and Visual modes
-			comment = '<C-.>',
+			comment = keys.comment,
 
 			-- Toggle comment on current line
-			comment_line = '<C-/>',
+			comment_line = keys.comment_line,
 
 			-- Toggle comment on visual selection
-			comment_visual = '<C-/>',
+			comment_visual = keys.comment_visual,
 
 			-- Define 'comment' textobject (like `dgc` - delete whole comment block)
 			-- Works also in Visual mode if mapping differs from `comment_visual`
-			textobject = '<C-/>',
+			textobject = keys.comment_textobject,
 		}
 	end,
 
 	surround = function()
 		return {
-			add = 'sa',         -- Add surrounding in Normal and Visual modes
-			delete = 'sd',      -- Delete surrounding
-			find = 'sf',        -- Find surrounding (to the right)
-			find_left = 'sF',   -- Find surrounding (to the left)
-			highlight = 'sh',   -- Highlight surrounding
-			replace = 'sr',     -- Replace surrounding
-			update_n_lines = 'sn', -- Update `n_lines`
+			add = keys.surrounding_add,                    -- Add surrounding in Normal and Visual modes
+			delete = keys.surrounding_delete,              -- Delete surrounding
+			find = keys.surrounding_find,                  -- Find surrounding (to the right)
+			find_left = keys.surrounding_find_left,        -- Find surrounding (to the left)
+			highlight = keys.surrounding_highlight,        -- Highlight surrounding
+			replace = keys.surrounding_replace,            -- Replace surrounding
+			update_n_lines = keys.surrounding_update_n_lines, -- Update `n_lines`
 
-			suffix_last = 'l',  -- Suffix to search with "prev" method
-			suffix_next = 'n',  -- Suffix to search with "next" method
+			suffix_last = keys.surrounding_suffix_last,    -- Suffix to search with "prev" method
+			suffix_next = keys.surrounding_suffix_next,    -- Suffix to search with "next" method
 		}
 	end,
 
 	mini_operators = function()
 		return {
-			evaluate = "g=",
-			exchange = "gx",
-			multiply = "gm",
-			replace = "gr", --with register
-			sort = "gs",
+			evaluate = keys.operators_evaluate,
+			exchange = keys.operators_exchange,
+			multiply = keys.operators_multiply,
+			replace = keys.operators_replace, --with register
+			sort = keys.operators_sort,
 		}
 	end,
 
 	mini_textobjects_ai = function()
 		return {
 			-- Main textobject prefixes
-			around = 'a',
-			inside = 'i',
+			around = keys.ai_around,
+			inside = keys.ai_inside,
 
 			-- Next/last variants
-			around_next = 'an',
-			inside_next = 'in',
-			around_last = 'al',
-			inside_last = 'il',
+			around_next = keys.ai_around_next,
+			inside_next = keys.ai_inside_next,
+			around_last = keys.ai_around_last,
+			inside_last = keys.ai_inside_last,
 
 			-- Move cursor to corresponding edge of `a` textobject
-			goto_left = 'g[',
-			goto_right = 'g]',
+			goto_left = keys.ai_goto_left,
+			goto_right = keys.ai_goto_right,
 		}
+	end,
+
+	notifications = function()
+		vim.keymap.set('n', keys.notifications_history, MiniNotify.show_history, { desc = "show history" })
+		vim.keymap.set('n', keys.notifications_clear, MiniNotify.clear, { desc = "clear notifications" })
+	end,
+
+	cmp = function(cmp, cmp_action)
+		return {
+			[keys.cmp_confirm] = cmp.mapping.confirm({ select = true }),
+
+			-- trigger completion menu
+			[keys.cmp_trigger] = cmp.mapping.complete(),
+
+			-- scroll up and down the documentation window
+			[keys.cmp_scroll_up] = cmp.mapping.scroll_docs(-4),
+			[keys.cmp_scroll_down] = cmp.mapping.scroll_docs(4),
+
+			-- navigate between snippet placeholders
+			[keys.cmp_jump_forward] = cmp_action.luasnip_jump_forward(),
+			[keys.cmp_jump_backward] = cmp_action.luasnip_jump_backward(),
+		}
+	end,
+
+	cmp_ufo = function()
+		vim.keymap.set('n', keys.folds_open_all, require('ufo').openAllFolds)
+		vim.keymap.set('n', keys.folds_close_all, require('ufo').closeAllFolds)
 	end,
 
 	static = {
 		taplo = {
 			{
-				"K",
+				keys.hover_info,
 				function()
 					if vim.fn.expand("%:t") == "Cargo.toml" and require("crates").popup_available() then
 						require("crates").show_popup()
@@ -272,14 +391,14 @@ local keymaps = {
 			},
 		},
 		hoversplit = {
-			split_remain_focused = "<leader>hs",
-			vsplit_remain_focused = "<leader>hv",
-			split = "<leader>hS",
-			vsplit = "<leader>hV",
+			split_remain_focused = keys.docs_split_remain_focused,
+			vsplit_remain_focused = keys.docs_vsplit_remain_focused,
+			split = keys.docs_split,
+			vsplit = keys.docs_vsplit,
 		},
 		format = {
 			{
-				"<leader>f",
+				keys.format_buffer,
 				function()
 					require("conform").format({ async = true, lsp_fallback = true })
 				end,

@@ -4,8 +4,8 @@ return {
 		version = false,
 
 		config = function()
-			-- #region editing
 			local keymaps = require("config.keymaps")
+			-- #region editing
 			require("mini.comment").setup({
 				ignore_blank_line = true,
 				mappings = keymaps.comment()
@@ -204,10 +204,11 @@ return {
 				},
 
 				clues = {
-					{ mode = "n", keys = "<leader>c", desc = "+code" },
-					{ mode = "n", keys = "<leader>t", desc = "+tests" },
-					{ mode = "n", keys = "<leader>h", desc = "+hover docs" },
-					{ mode = "n", keys = "<leader>p", desc = "+projects" },
+					{ mode = "n", keys = "<leader>c",  desc = "+code" },
+					{ mode = "n", keys = "<leader>ct", desc = "+tests" },
+					{ mode = "n", keys = "<leader>h",  desc = "+hover docs" },
+					{ mode = "n", keys = "<leader>p",  desc = "+projects" },
+					{ mode = "n", keys = "<leader>n",  desc = "+notifications" },
 					-- Enhance this by adding descriptions for <Leader> mapping groups
 					miniclue.gen_clues.builtin_completion(),
 					miniclue.gen_clues.g(),
@@ -219,6 +220,40 @@ return {
 				window = { delay = 100, config = {} }
 			})
 			miniclue.ensure_buf_triggers()
+			-- #endregion
+
+			-- #region notify
+			local notify = require('mini.notify')
+			notify.setup({
+				content = {
+					-- Use notification message as is
+					format = function(notif) return notif.msg end,
+
+					-- Show more recent notifications first
+					sort = function(notif_arr)
+						table.sort(
+							notif_arr,
+							function(a, b) return a.ts_update > b.ts_update end
+						)
+						return notif_arr
+					end,
+				},
+				lsp_progress = {
+					enable = false,
+				},
+				window = {
+					-- Floating window config
+					config = {},
+
+					-- Maximum window width as share (between 0 and 1) of available columns
+					max_width_share = 0.382,
+
+					-- Value of 'winblend' option
+					winblend = 25,
+				},
+			})
+			vim.notify = notify.make_notify()
+			require("config.keymaps").notifications()
 			-- #endregion
 		end
 	}

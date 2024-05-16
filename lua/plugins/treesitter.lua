@@ -36,8 +36,8 @@ return { {
 	} },
 	opts = {
 		-- A list of parser names, or "all"
-		ensure_installed = { "go", "python", "dockerfile", "json", "yaml", "markdown", "html", "scss", "css", "vim", "wgsl_bevy", "rust", "ron", "toml" },
-
+		ensure_installed = { "go", "python", "dockerfile", "json", "yaml", "markdown", "html", "scss", "css", "vim", "wgsl_bevy", "rust", "ron", "toml", "javascript", "typescript" },
+		sync_install = false,
 		highlight = {
 			enable = true,
 			use_languagetree = true
