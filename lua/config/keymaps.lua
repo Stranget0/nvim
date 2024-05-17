@@ -51,9 +51,9 @@ local keys = {
 	cmp_jump_forward = '<C-f>',
 	cmp_jump_backward = '<C-b>',
 
-	run_nearest_test = "<leader>tt",
-	run_tests_in_file = "<leader>tf",
-	stop_nearest_test = "<leader>ts",
+	run_nearest_test = "<leader>ctt",
+	run_tests_in_file = "<leader>ctf",
+	stop_nearest_test = "<leader>cts",
 
 	comment = '<C-.>',
 	comment_line = '<C-/>',
