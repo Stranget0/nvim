@@ -2,6 +2,7 @@ return {
 	{
 		'echasnovski/mini.nvim',
 		version = false,
+		priority = 1000,
 
 		config = function()
 			local keymaps = require("config.keymaps")
@@ -88,72 +89,20 @@ return {
 
 			-- #region key clues
 			local miniclue = require('mini.clue')
+			local keyboard = require("config.keyboard")
 			miniclue.setup({
-				triggers = {
-					-- Control
-					{ mode = 'n', keys = '<C>' },
-					-- Leader triggers
-					{ mode = 'n', keys = '<Leader>' },
-					{ mode = 'x', keys = '<Leader>' },
+				triggers = keyboard.triggers,
 
-					-- Built-in completion
-					{ mode = 'i', keys = '<C-x>' },
-
-					-- `g` key
-					{ mode = 'n', keys = 'g' },
-					{ mode = 'x', keys = 'g' },
-
-					-- `f` key
-					{ mode = 'n', keys = 'f' },
-
-					-- mini comment / surround
-					{ mode = 'n', keys = 's' },
-					{ mode = 'n', keys = 'l' },
-					{ mode = 'n', keys = 'n' },
-
-					-- Marks
-					{ mode = 'n', keys = "'" },
-					{ mode = 'n', keys = '`' },
-					{ mode = 'x', keys = "'" },
-					{ mode = 'x', keys = '`' },
-
-					-- Registers
-					{ mode = 'n', keys = '"' },
-					{ mode = 'x', keys = '"' },
-					{ mode = 'i', keys = '<C-r>' },
-					{ mode = 'c', keys = '<C-r>' },
-
-					-- Window commands
-					{ mode = 'n', keys = '<C-w>' },
-
-					-- `z` key
-					{ mode = 'n', keys = 'z' },
-					{ mode = 'x', keys = 'z' },
-
-					-- LSP
-					{ mode = "n", keys = "[" },
-					{ mode = "n", keys = "]" },
-					{ mode = "n", keys = "g" },
-					{ mode = "n", keys = "g" },
-					{ mode = "n", keys = "g" },
-					{ mode = "n", keys = "g" },
-					{ mode = "n", keys = "L" },
-				},
-
-				clues = {
-					{ mode = "n", keys = "<leader>c",  desc = "+code" },
-					{ mode = "n", keys = "<leader>ct", desc = "+tests" },
-					{ mode = "n", keys = "<leader>h",  desc = "+hover docs" },
-					{ mode = "n", keys = "<leader>p",  desc = "+projects" },
-					{ mode = "n", keys = "<leader>n",  desc = "+notifications" },
-					-- Enhance this by adding descriptions for <Leader> mapping groups
-					miniclue.gen_clues.builtin_completion(),
-					miniclue.gen_clues.g(),
-					miniclue.gen_clues.marks(),
-					miniclue.gen_clues.registers(),
-					miniclue.gen_clues.windows(),
-					miniclue.gen_clues.z(),
-				},
+				clues = vim.list_extend(
+					keyboard.clues,
+					{
+						miniclue.gen_clues.builtin_completion(),
+						miniclue.gen_clues.g(),
+						miniclue.gen_clues.marks(),
+						miniclue.gen_clues.registers(),
+						miniclue.gen_clues.windows(),
+						miniclue.gen_clues.z(),
+					}),
 				window = { delay = 100, config = {} }
 			})
 			miniclue.ensure_buf_triggers()
@@ -190,7 +139,7 @@ return {
 				},
 			})
 			vim.notify = notify.make_notify()
-			require("config.keymaps").notifications()
+			keymaps.notifications()
 			-- #endregion
 		end
 	}

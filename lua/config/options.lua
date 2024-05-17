@@ -76,7 +76,7 @@ opt.swapfile = false    -- creates a swapfile
 opt.writebackup = false -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
 
 -- autocomplete
-opt.completeopt = { "menu", "menuone", "noselect" } -- mostly just for cmp
+-- opt.completeopt = { "menu", "menuone", "noselect" } -- mostly just for cmp
 opt.shortmess = opt.shortmess + {
 	c = true
 } -- hide all the completion messages, e.g. "-- XXX completion (YYY)", "match 1 of 2", "The only match", "Pattern not found"
@@ -111,15 +111,6 @@ vim.diagnostic.config({
 	virtual_text = false,
 	virtual_lines = {
 		only_current_line = true,
-	},
-	update_in_insert = true,
-	underline = true,
-	severity_sort = true,
-	float = {
-		focusable = true,
-		border = "rounded",
-		header = "",
-		prefix = "",
 	},
 })
 

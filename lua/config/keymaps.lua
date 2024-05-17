@@ -11,96 +11,7 @@
 -- -- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
 -- -- Close all windows and exit from Neovim with <leader> and q
 
-local keys = {
-	project_list = "<leader>pl",
-	project_add = "<leader>pa",
-	find_file = "<leader>ff",
-	old_files = "<leader>fr",
-	new_file = "<leader>fn",
-
-	next_diagnostic = "g[",
-	prev_diagnostic = "g]",
-	diagnostic_list = "<leader>cd",
-	go_definition = "gd",
-	go_type = "gt",
-	go_references = "gr",
-	rename = "<leader>cr",
-	code_action = "<leader>ca",
-	hover_info = "K",
-	open_docs = "<leader>td",
-
-	prev_git_hunk = "h[",
-	next_git_hunk = "h]",
-	stage_hunk = '<leader>gs',
-	reset_hunk = '<leader>gr',
-	stage_buffer = '<leader>gS',
-	undo_stage_hunk = '<leader>gu',
-	reset_buffer_hunks = '<leader>gR',
-	preview_hunk = '<leader>gp',
-	blame_line = '<leader>gb',
-	blame_line_toggle = '<leader>gtb',
-	diffthis = '<leader>gd',
-	diffthis_tilde = '<leader>gD',
-	toggle_deleted_hunk = '<leader>gtd',
-	select_hunk = 'gih',
-
-	cmp_confirm = '<Enter>',
-	cmp_trigger = '<C-Space>',
-	cmp_scroll_up = '<C-u>',
-	cmp_scroll_down = '<C-d>',
-	cmp_jump_forward = '<C-f>',
-	cmp_jump_backward = '<C-b>',
-
-	run_nearest_test = "<leader>ctt",
-	run_tests_in_file = "<leader>ctf",
-	stop_nearest_test = "<leader>cts",
-
-	comment = '<C-.>',
-	comment_line = '<C-/>',
-	comment_visual = '<C-/>',
-	comment_textobject = '<C-/>',
-
-
-	surrounding_add = 'sa',
-	surrounding_delete = 'sd',
-	surrounding_find = 'sf',
-	surrounding_find_left = 'sF',
-	surrounding_highlight = 'sh',
-	surrounding_replace = 'sr',
-	surrounding_update_n_lines = 'sn',
-
-	surrounding_suffix_last = 'l',
-	surrounding_suffix_next = 'n',
-
-	operators_evaluate = "g=",
-	operators_exchange = "gx",
-	operators_multiply = "gm",
-	operators_replace = "gr",
-	operators_sort = "gs",
-
-	ai_around = 'a',
-	ai_inside = 'i',
-	ai_around_next = 'an',
-	ai_inside_next = 'in',
-	ai_around_last = 'al',
-	ai_inside_last = 'il',
-	ai_goto_left = 'g[',
-	ai_goto_right = 'g]',
-
-	notifications_history = "<leader>nh",
-	notifications_clear = "<leader>nd",
-
-	folds_open_all = 'zR',
-	folds_close_all = 'zM',
-
-	docs_split_remain_focused = "<leader>hs",
-	docs_vsplit_remain_focused = "<leader>hv",
-	docs_split = "<leader>hS",
-	docs_vsplit = "<leader>hV",
-
-	format_buffer = "<leader>f",
-}
-
+local keys = require("config.keyboard").keys
 
 local keymaps = {
 	common = function()
@@ -133,12 +44,31 @@ local keymaps = {
 			function()
 				vim.cmd.RustLsp("codeAction")
 			end,
-			{ desc = "code action", buffer = bufnr, silent = true })
+			{ desc = "code action", buffer = bufnr, silent = true }
+		)
 
 		vim.keymap.set("n", keys.hover_info,
 			function()
-				vim.cmd.RustLsp { 'hover', 'actions' }
-			end
+				vim.cmd.RustLsp({ 'hover', 'actions' })
+			end,
+			{ desc = "hover actions", buffer = bufnr, silent = true }
+		)
+
+		vim.keymap.set(
+			{ "n", "v" },
+			keys.code_move_up,
+			function()
+				vim.cmd.RustLsp { 'moveItem', 'up' }
+			end,
+			{ desc = "move item up", buffer = bufnr, silent = true }
+		)
+		vim.keymap.set(
+			{ "n", "v" },
+			keys.code_move_down,
+			function()
+				vim.cmd.RustLsp { 'moveItem', 'down' }
+			end,
+			{ desc = "move item down", buffer = bufnr, silent = true }
 		)
 	end,
 
@@ -153,7 +83,7 @@ local keymaps = {
 		end
 
 		-- Navigation
-		map('n', keys.next_git_hunk, function()
+		map('n', keys.git_next_hunk, function()
 			if vim.wo.diff then
 				vim.cmd.normal({ ']c', bang = true })
 			else
@@ -161,7 +91,7 @@ local keymaps = {
 			end
 		end, "next hunk")
 
-		map('n', keys.prev_git_hunk, function()
+		map('n', keys.git_prev_hunk, function()
 			if vim.wo.diff then
 				vim.cmd.normal({ '[c', bang = true })
 			else
@@ -171,22 +101,22 @@ local keymaps = {
 
 
 		-- Actions
-		map('n', keys.stage_hunk, gitsigns.stage_hunk, "stage hunk")
-		map('n', keys.reset_hunk, gitsigns.reset_hunk, "reset hunk")
+		map('n', keys.git_stage_hunk, gitsigns.stage_hunk, "stage hunk")
+		map('n', keys.git_reset_hunk, gitsigns.reset_hunk, "reset hunk")
 		-- map('v', keys.stage_hunk, function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "stage hunk")
 		-- map('v', keys.reset_hunk, function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "reset hunk")
-		map('n', keys.stage_buffer, gitsigns.stage_buffer, "stage buffer")
-		map('n', keys.undo_stage_hunk, gitsigns.undo_stage_hunk, "undo stage hunk")
-		map('n', keys.reset_buffer_hunks, gitsigns.reset_buffer, "reset buffer")
-		map('n', keys.preview_hunk, gitsigns.preview_hunk, "preview hunk")
-		map('n', keys.blame_line, function() gitsigns.blame_line { full = true } end, "blame line")
-		map('n', keys.blame_line_toggle, gitsigns.toggle_current_line_blame, "toggle current line blame")
-		map('n', keys.diffthis, gitsigns.diffthis, "diffthis")
-		map('n', keys.diffthis_tilde, function() gitsigns.diffthis('~') end, "diffthis")
-		map('n', keys.toggle_deleted_hunk, gitsigns.toggle_deleted, "toggle deleted")
+		map('n', keys.git_stage_buffer, gitsigns.stage_buffer, "stage buffer")
+		map('n', keys.git_undo_stage_hunk, gitsigns.undo_stage_hunk, "undo stage hunk")
+		map('n', keys.git_reset_buffer_hunks, gitsigns.reset_buffer, "reset buffer")
+		map('n', keys.git_preview_hunk, gitsigns.preview_hunk, "preview hunk")
+		map('n', keys.git_blame_line, function() gitsigns.blame_line { full = true } end, "blame line")
+		map('n', keys.git_blame_line_toggle, gitsigns.toggle_current_line_blame, "toggle current line blame")
+		map('n', keys.git_diffthis, gitsigns.diffthis, "diffthis")
+		map('n', keys.git_diffthis_tilde, function() gitsigns.diffthis('~') end, "diffthis")
+		map('n', keys.git_toggle_deleted_hunk, gitsigns.toggle_deleted, "toggle deleted")
 
 		-- Text object
-		map({ 'o', 'x' }, keys.select_hunk, ':<C-U>Gitsigns select_hunk<CR>', "select hunk")
+		map({ 'o', 'x' }, keys.git_select_hunk, ':<C-U>Gitsigns select_hunk<CR>', "select hunk")
 	end,
 
 	file_tree = function(bufnr)
@@ -267,9 +197,9 @@ local keymaps = {
 			end,
 			{ desc = "run tests in file" })
 
-		vim.keymap.set(keys.stop_nearest_test,
-			test.stop,
-			{ desc = "stop nearest test" })
+		-- vim.keymap.set(keys.stop_nearest_test,
+		-- 	test.stop,
+		-- 	{ desc = "stop nearest test" })
 		-- Run the nearest test
 		-- require("neotest").run.run()
 
@@ -374,6 +304,10 @@ local keymaps = {
 	cmp_ufo = function()
 		vim.keymap.set('n', keys.folds_open_all, require('ufo').openAllFolds)
 		vim.keymap.set('n', keys.folds_close_all, require('ufo').closeAllFolds)
+	end,
+
+	code_outline = function()
+		return { { keys.code_outline, "<cmd>Outline<CR>", desc = "Toggle outline" } }
 	end,
 
 	static = {

@@ -15,6 +15,7 @@ local servers = {
 return {
 	{
 		'VonHeikemen/lsp-zero.nvim',
+		priority = 1,
 		branch = 'v3.x',
 		config = function()
 			local lsp_zero = require('lsp-zero')
@@ -45,11 +46,12 @@ return {
 
 			cmp.setup({
 				sources = {
+					{ name = "crates", },
 					{ name = "nvim_lsp", group_index = 1, },
 					{ name = "luasnip",  group_index = 2, },
 					{
 						name = "buffer",
-						keyword_length = 5,
+						keyword_length = 2,
 						group_index = 3,
 					},
 					{ name = "path" },
@@ -105,14 +107,7 @@ return {
 				}
 			})
 
-			vim.g.rustaceanvim = {
-				server = {
-					capabilities = lsp_zero.get_capabilities()
-				},
-				on_attach = function(client, bufnr)
-					keymaps.rust_lsp(bufnr)
-				end,
-			}
+			vim.g.rustaceanvim.server.capabilities = lsp_zero.get_capabilities()
 
 			vim.o.foldcolumn = '1'
 			vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
@@ -127,11 +122,7 @@ return {
 	{ 'hrsh7th/cmp-nvim-lsp' },
 	{ 'hrsh7th/nvim-cmp' },
 	{ 'L3MON4D3/LuaSnip' },
-	{ 'windwp/nvim-autopairs' },
 	{ 'kevinhwang91/nvim-ufo',            dependencies = 'kevinhwang91/promise-async' },
-	{
-		'mrcjkb/rustaceanvim',
-		version = '^4', -- Recommended
-		lazy = false, -- This plugin is already lazy
-	}
+	'windwp/nvim-autopairs',
+	'mrcjkb/rustaceanvim',
 }

@@ -2,9 +2,7 @@ return { {
 	"hedyhli/outline.nvim",
 	lazy = true,
 	cmd = { "Outline", "OutlineOpen" },
-	keys = { -- Example mapping to toggle outline
-		{ "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
-	},
+	keys = require("config.keymaps").code_outline(),
 	opts = {
 		-- Your setup opts here
 	},

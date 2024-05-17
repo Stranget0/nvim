@@ -2,6 +2,7 @@ return { {
 	"mrcjkb/rustaceanvim",
 	version = "^4", -- Recommended
 	ft = { "rust" },
+	priority = 100,
 	opts = {
 		server = {
 			on_attach = function(_, bufnr)
@@ -75,9 +76,7 @@ return { {
 	end,
 
 	dependencies = {
-		{
-			"nvim-neotest/neotest",
-			optional = true,
-		}
+		"nvim-neotest/neotest",
 	}
-} }
+}
+}
