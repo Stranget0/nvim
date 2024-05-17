@@ -70,6 +70,23 @@ local keymaps = {
 			end,
 			{ desc = "move item down", buffer = bufnr, silent = true }
 		)
+
+		vim.keymap.set(
+			"n",
+			keys.runnables,
+			function()
+				vim.cmd.RustLsp('runnables')
+			end,
+			{ desc = "runnables", buffer = bufnr, silent = true }
+		)
+
+		vim.keymap.set(
+			"n",
+			keys.last_runnable,
+			function()
+				vim.cmd.RustLsp { 'runnables', bang = true }
+			end,
+			{ desc = "run last runnable", buffer = bufnr, silent = true })
 	end,
 
 	github = function(bufnr)

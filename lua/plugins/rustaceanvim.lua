@@ -2,7 +2,7 @@ return { {
 	"mrcjkb/rustaceanvim",
 	version = "^4", -- Recommended
 	ft = { "rust" },
-	priority = 100,
+	priority = 2,
 	opts = {
 		server = {
 			on_attach = function(_, bufnr)
@@ -70,6 +70,12 @@ return { {
 				},
 			},
 		},
+		tools = {
+			float_win_config = {
+				auto_focus = true,
+				open_split = "horizontal"
+			}
+		}
 	},
 	config = function(_, opts)
 		vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})

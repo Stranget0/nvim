@@ -2,7 +2,6 @@ return {
 	{
 		'echasnovski/mini.nvim',
 		version = false,
-		priority = 1000,
 
 		config = function()
 			local keymaps = require("config.keymaps")

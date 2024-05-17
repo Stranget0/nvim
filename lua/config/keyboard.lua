@@ -43,6 +43,9 @@ M.keys = {
 	run_nearest_test = "<leader>rt",
 	run_tests_in_file = "<leader>rT",
 
+	runnables = "<leader>rr",
+	last_runnable = "<leader>rR",
+
 	comment = '<C-.>',
 	comment_line = '<C-/>',
 	comment_visual = '<C-/>',
