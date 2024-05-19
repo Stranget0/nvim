@@ -120,8 +120,8 @@ local keymaps = {
 		-- Actions
 		map('n', keys.git_stage_hunk, gitsigns.stage_hunk, "stage hunk")
 		map('n', keys.git_reset_hunk, gitsigns.reset_hunk, "reset hunk")
-		-- map('v', keys.stage_hunk, function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "stage hunk")
-		-- map('v', keys.reset_hunk, function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "reset hunk")
+		map('v', keys.git_stage_hunk, function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "stage hunk")
+		map('v', keys.git_reset_hunk, function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "reset hunk")
 		map('n', keys.git_stage_buffer, gitsigns.stage_buffer, "stage buffer")
 		map('n', keys.git_undo_stage_hunk, gitsigns.undo_stage_hunk, "undo stage hunk")
 		map('n', keys.git_reset_buffer_hunks, gitsigns.reset_buffer, "reset buffer")
@@ -325,6 +325,27 @@ local keymaps = {
 
 	code_outline = function()
 		return { { keys.code_outline, "<cmd>Outline<CR>", desc = "Toggle outline" } }
+	end,
+
+	oil = function()
+		return {
+			["g?"] = "actions.show_help",
+			["<CR>"] = "actions.select",
+			["<C-s>"] = "actions.select_vsplit",
+			["<C-h>"] = "actions.select_split",
+			["<C-t>"] = "actions.select_tab",
+			["<C-p>"] = "actions.preview",
+			["<C-c>"] = "actions.close",
+			["<C-l>"] = "actions.refresh",
+			["-"] = "actions.parent",
+			["_"] = "actions.open_cwd",
+			["`"] = "actions.cd",
+			["~"] = "actions.tcd",
+			["gs"] = "actions.change_sort",
+			["gx"] = "actions.open_external",
+			["g."] = "actions.toggle_hidden",
+			["g\\"] = "actions.toggle_trash",
+		}
 	end,
 
 	static = {

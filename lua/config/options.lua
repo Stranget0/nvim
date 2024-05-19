@@ -9,6 +9,7 @@
 -- File: config/options.lua
 -- Description: General Neovim settings and configuration
 -- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
+local icons = require("config.icons")
 local cmd = vim.cmd
 -- Set options (global/buffer/windows-scoped)
 local opt = vim.opt
@@ -111,7 +112,16 @@ vim.diagnostic.config({
 	virtual_text = false,
 	virtual_lines = {
 		only_current_line = true,
+		highlight_whole_line = false,
 	},
+	severity_sort = true,
+	float = {
+		source = true,
+		border = "rounded",
+	},
+	signs = {
+		text = { icons.diagnostics.Error, icons.diagnostics.Warn, icons.diagnostics.Info, icons.diagnostics.Hint }
+	}
 })
 
 -- 'JoosepAlviste/nvim-ts-context-commentstring',
@@ -119,6 +129,7 @@ g.skip_ts_context_commentstring_module = true
 
 -- lsp line stop jumping the line if errors or warns
 vim.wo.signcolumn = "yes"
+vim.wo.relativenumber = true
 
 -- Disable builtin plugins
 local disabled_built_ins = { "2html_plugin", "getscript", "getscriptPlugin", "gzip", "logipat", "netrw", "netrwPlugin",
@@ -129,6 +140,12 @@ local disabled_built_ins = { "2html_plugin", "getscript", "getscriptPlugin", "gz
 
 for _, plugin in pairs(disabled_built_ins) do
 	g["loaded_" .. plugin] = 1
+end
+
+
+for name, icon in pairs(icons.diagnostics) do
+	local hl = "DiagnosticSign" .. name
+	vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
 end
 
 -- Colorscheme

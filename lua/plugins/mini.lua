@@ -79,7 +79,7 @@ return {
 					-- autoread = true,
 
 					-- Directory where global sessions are stored (use `''` to disable)
-					directory = "nvim_sessions",
+					-- directory = "nvim_sessions",
 
 					-- Whether to print session path after action
 					verbose = { read = false, write = true, delete = true },

@@ -1,5 +1,11 @@
 local M = {
-	diagnostics = { Error = "✘", Warn = "", Hint = "i", Info = "i" },
+	arm_flex = "󰿖",
+	rainbow = "",
+	skull = "󰚌",
+	skull_2 = "",
+	autofix = "",
+	success = "",
+	statusline = { Error = "󰯈", Warn = "", Hint = "", Info = "󰙎" },
 	git = {
 		Add = "+",
 		Change = "~",
@@ -43,11 +49,11 @@ local M = {
 		Value = "󰎠",
 		Variable = "󰀫",
 	},
-	statusline = {
-		Error = "❗",
-		Warn = "⚠️ ",
-		Hint = "i",
-		Info = "💡",
+	diagnostics = {
+		Error = "e",
+		Warn = "w",
+		Hint = "h",
+		Info = "i",
 	},
 }
 

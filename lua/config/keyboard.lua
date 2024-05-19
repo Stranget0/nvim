@@ -46,10 +46,10 @@ M.keys = {
 	runnables = "<leader>rr",
 	last_runnable = "<leader>rR",
 
-	comment = '<C-.>',
-	comment_line = '<C-/>',
-	comment_visual = '<C-/>',
-	comment_textobject = '<C-/>',
+	comment = '<C-m>',
+	comment_line = '<C-m>',
+	comment_visual = '<C-m>',
+	comment_textobject = '<C-m>',
 
 
 	surrounding_add = 'sa',

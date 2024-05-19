@@ -1,3 +1,4 @@
+local icons = require("config.icons")
 local servers = {
 	jsonls = {},
 	dockerls = {},
@@ -7,6 +8,15 @@ local servers = {
 	vimls = {},
 	yamlls = {},
 	wgsl_analyzer = {},
+	lua_ls = {
+		settings = {
+			Lua = {
+				completion = {
+					callSnippet = "Replace"
+				}
+			}
+		}
+	},
 	taplo = {
 		keys = require("config.keymaps").static.taplo,
 	},
@@ -18,11 +28,19 @@ return {
 		priority = 1,
 		branch = 'v3.x',
 		config = function()
-			local lsp_zero = require('lsp-zero')
-			lsp_zero.extend_lspconfig()
+			require("neodev").setup()
+			local lsp = require('lsp-zero')
+			lsp.extend_lspconfig()
 			local keymaps = require('config.keymaps')
 
-			lsp_zero.on_attach(function(client, bufnr)
+			lsp.set_sign_icons({
+				error = icons.diagnostics.Error,
+				warn = icons.diagnostics.Warn,
+				info = icons.diagnostics.Info,
+				hint = icons.diagnostics.Hint,
+			})
+
+			lsp.on_attach(function(client, bufnr)
 				keymaps.lsp(bufnr)
 			end)
 
@@ -35,14 +53,14 @@ return {
 				ensure_installed,
 				handlers = {
 					function(server_name)
-						require('lspconfig')[server_name].setup({})
+						require('lspconfig')[server_name].setup(servers[server_name] or {})
 					end,
-					rust_analyzer = lsp_zero.noop,
+					rust_analyzer = lsp.noop,
 				},
 			})
 
 			local cmp = require('cmp')
-			local cmp_action = lsp_zero.cmp_action()
+			local cmp_action = lsp.cmp_action()
 
 			cmp.setup({
 				sources = {
@@ -96,7 +114,7 @@ return {
 			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 
-			lsp_zero.set_server_config({
+			lsp.set_server_config({
 				capabilities = {
 					textDocument = {
 						foldingRange = {
@@ -107,7 +125,7 @@ return {
 				}
 			})
 
-			vim.g.rustaceanvim.server.capabilities = lsp_zero.get_capabilities()
+			vim.g.rustaceanvim.server.capabilities = lsp.get_capabilities()
 
 			vim.o.foldcolumn = '1'
 			vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
@@ -116,6 +134,7 @@ return {
 			keymaps.cmp_ufo()
 		end
 	},
+
 	{ 'neovim/nvim-lspconfig' },
 	{ "williamboman/mason.nvim" },
 	{ "williamboman/mason-lspconfig.nvim" },
@@ -125,4 +144,5 @@ return {
 	{ 'kevinhwang91/nvim-ufo',            dependencies = 'kevinhwang91/promise-async' },
 	'windwp/nvim-autopairs',
 	'mrcjkb/rustaceanvim',
+	"folke/neodev.nvim"
 }

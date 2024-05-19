@@ -34,6 +34,9 @@ return {
 	{
 		"dgox16/oldworld.nvim",
 		lazy = false,
-		config = true,
+	},
+	{
+		'mellow-theme/mellow.nvim',
+		lazy = true
 	}
 }
