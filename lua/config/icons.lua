@@ -50,10 +50,10 @@ local M = {
 		Variable = "󰀫",
 	},
 	diagnostics = {
-		Error = "e",
-		Warn = "w",
-		Hint = "h",
-		Info = "i",
+		Error = "󰚌",
+		Warn = "",
+		Hint = "",
+		Info = "󰙎",
 	},
 }
 

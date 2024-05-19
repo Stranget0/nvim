@@ -129,6 +129,7 @@ g.skip_ts_context_commentstring_module = true
 
 -- lsp line stop jumping the line if errors or warns
 vim.wo.signcolumn = "yes"
+
 vim.wo.relativenumber = true
 
 -- Disable builtin plugins

@@ -8,6 +8,7 @@ local servers = {
 	vimls = {},
 	yamlls = {},
 	wgsl_analyzer = {},
+	eslint = {},
 	lua_ls = {
 		settings = {
 			Lua = {
