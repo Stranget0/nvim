@@ -76,13 +76,13 @@ return {
       -- #region sessions
       require("mini.sessions").setup(
         {
-          -- autoread = true,
+          autoread = true,
 
           -- Directory where global sessions are stored (use `''` to disable)
           -- directory = "nvim_sessions",
 
           -- Whether to print session path after action
-          verbose = { read = false, write = true, delete = true },
+          verbose = { read = true, write = true, delete = true },
         })
       -- #endregion
 
@@ -139,7 +139,6 @@ return {
       })
       vim.notify = notify.make_notify()
       keymaps.notifications()
-      require("config.keyboard").check_conflicts()
       -- #endregion
     end
   }

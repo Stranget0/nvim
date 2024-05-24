@@ -68,7 +68,7 @@ M.keys = {
   operators_evaluate = "<leader>c=",
   operators_exchange = "<leader>cx",
   operators_multiply = "<leader>cm",
-  operators_replace = "<leader>cr",
+  operators_replace = "<leader>cR",
   operators_sort = "<leader>cs",
 
   ai_around = 'a',
@@ -93,51 +93,54 @@ M.keys = {
 
 M.triggers = {
   -- Leader triggers
-  { mode = 'n', keys = '<Leader>' },
-  { mode = 'x', keys = '<Leader>' },
+  { mode = 'n',               keys = '<Leader>' },
+  { mode = 'x',               keys = '<Leader>' },
 
   -- Built-in completion
-  { mode = 'i', keys = '<C-x>' },
+  { mode = 'i',               keys = '<C-x>' },
 
   -- `g` key
-  { mode = 'n', keys = 'g' },
-  { mode = 'x', keys = 'g' },
+  { mode = 'n',               keys = 'g' },
+  { mode = 'x',               keys = 'g' },
 
   -- `f` key
-  { mode = 'n', keys = 'f' },
+  { mode = 'n',               keys = 'f' },
 
   -- mini comment / surround
-  { mode = 'n', keys = 's' },
-  { mode = 'n', keys = 'l' },
-  { mode = 'n', keys = 'n' },
+  { mode = 'n',               keys = 's' },
+  { mode = 'n',               keys = 'l' },
+  { mode = 'n',               keys = 'n' },
 
   -- Marks
-  { mode = 'n', keys = "'" },
-  { mode = 'n', keys = '`' },
-  { mode = 'x', keys = "'" },
-  { mode = 'x', keys = '`' },
+  { mode = 'n',               keys = "'" },
+  { mode = 'n',               keys = '`' },
+  { mode = 'x',               keys = "'" },
+  { mode = 'x',               keys = '`' },
 
   -- Registers
-  { mode = 'n', keys = '"' },
-  { mode = 'x', keys = '"' },
-  { mode = 'i', keys = '<C-r>' },
-  { mode = 'c', keys = '<C-r>' },
+  { mode = 'n',               keys = '"' },
+  { mode = 'x',               keys = '"' },
+  { mode = 'i',               keys = '<C-r>' },
+  { mode = 'c',               keys = '<C-r>' },
 
   -- Window commands
-  { mode = 'n', keys = '<C-w>' },
+  { mode = 'n',               keys = '<C-w>' },
 
   -- `z` key
-  { mode = 'n', keys = 'z' },
-  { mode = 'x', keys = 'z' },
+  { mode = 'n',               keys = 'z' },
+  { mode = 'x',               keys = 'z' },
 
   -- LSP
-  { mode = "n", keys = "[" },
-  { mode = "n", keys = "]" },
-  { mode = "n", keys = "g" },
-  { mode = "n", keys = "g" },
-  { mode = "n", keys = "g" },
-  { mode = "n", keys = "g" },
-  { mode = "n", keys = "L" },
+  { mode = "n",               keys = "[" },
+  { mode = "n",               keys = "]" },
+  { mode = "n",               keys = "g" },
+  { mode = "n",               keys = "g" },
+  { mode = "n",               keys = "g" },
+  { mode = "n",               keys = "g" },
+  { mode = "n",               keys = "L" },
+
+  -- other
+  { mode = { "n", "v", "i" }, keys = "b" },
 }
 
 M.clues = {
