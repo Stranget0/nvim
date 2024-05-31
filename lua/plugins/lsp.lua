@@ -7,7 +7,6 @@ local servers = {
   ruff_lsp = {},
   vimls = {},
   yamlls = {},
-  wgsl_analyzer = {},
   eslint = {},
   lua_ls = {
     settings = {
