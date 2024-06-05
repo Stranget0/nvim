@@ -64,25 +64,29 @@ return {
 
       cmp.setup({
         sources = {
-          { name = "crates", },
-          { name = "nvim_lsp", group_index = 1, },
-          { name = "luasnip",  group_index = 2, },
           {
-            name = "buffer",
-            keyword_length = 2,
-            group_index = 3,
+            name = "nvim_lsp",
+            entry_filter = function(entry, ctx)
+              return require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~= 'Text'
+            end
+            ,
+            max_item_count = 5,
+            group_index = 1
           },
-          { name = "path" },
+          { name = "luasnip", max_item_count = 15, group_index = 2 },
+          { name = "buffer",  max_item_count = 15, group_index = 3 },
+          { name = "crates",  max_item_count = 15 },
+          { name = "path",    max_item_count = 15 },
         },
         mapping = cmp.mapping.preset.insert(keymaps.cmp(cmp, cmp_action)),
         preselect = cmp.PreselectMode.Item,
         performance = {
-          debounce = 0,
-          throttle = 0,
-          fetching_timeout = 200,
-          confirm_resolve_timeout = 100,
-          async_budget = 100,
-          max_view_entries = 40,
+          debounce = 100,
+          throttle = 200,
+          fetching_timeout = 1000,
+          confirm_resolve_timeout = 1000,
+          async_budget = 1000,
+          max_view_entries = 20,
 
         },
         sorting = {
@@ -93,20 +97,8 @@ return {
             cmp.config.compare.offset,
             cmp.config.compare.recently_used,
             cmp.config.compare.exact,
-            -- cmp.config.compare.scopes,
-            -- cmp.config.compare.score,
-            -- cmp.config.compare.locality,
-            -- cmp.config.compare.sort_text,
-            -- cmp.config.compare.order,
           },
         },
-        -- matching = {
-        -- 	disallow_fuzzy_matching = true,
-        -- 	disallow_fullfuzzy_matching = true,
-        -- 	disallow_partial_fuzzy_matching = true,
-        -- 	disallow_partial_matching = false,
-        -- 	disallow_prefix_unmatching = true,
-        -- },
         snippet = {
           expand = function(args)
             require('luasnip').lsp_expand(args.body)
@@ -117,25 +109,7 @@ return {
       local cmp_autopairs = require("nvim-autopairs.completion.cmp")
       cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
-
-      lsp.set_server_config({
-        capabilities = {
-          textDocument = {
-            foldingRange = {
-              dynamicRegistration = false,
-              lineFoldingOnly = true
-            }
-          }
-        }
-      })
-
       vim.g.rustaceanvim.server.capabilities = lsp.get_capabilities()
-
-      vim.o.foldcolumn = '1'
-      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-      vim.o.foldlevelstart = 99
-      vim.o.foldenable = true
-      keymaps.cmp_ufo()
     end
   },
 
@@ -145,7 +119,6 @@ return {
   { 'hrsh7th/cmp-nvim-lsp' },
   { 'hrsh7th/nvim-cmp' },
   { 'L3MON4D3/LuaSnip' },
-  { 'kevinhwang91/nvim-ufo',            dependencies = 'kevinhwang91/promise-async' },
   'windwp/nvim-autopairs',
   'mrcjkb/rustaceanvim',
   "folke/neodev.nvim"
