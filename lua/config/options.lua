@@ -50,6 +50,7 @@ opt.cursorline = true -- highlight the current line
 opt.laststatus = 2    -- only the last window will always have a status line
 opt.lazyredraw = true -- don"t update the display while executing macros
 opt.list = true
+
 -- You can also add "space" or "eol", but I feel it"s quite annoying
 opt.listchars = {
   tab = "┊ ",
@@ -64,7 +65,9 @@ opt.cmdheight = 0      -- more space in the neovim command line for displaying m
 
 opt.mouse = "a"        -- allow the mouse to be used in neovim
 opt.number = true      -- set numbered lines
-opt.scrolloff = 18     -- minimal number of screen lines to keep above and below the cursor
+vim.wo.relativenumber = true
+opt.scrolloff = 1000   -- minimal number of screen lines to keep above and below the cursor
+opt.incsearch = true
 opt.sidescrolloff = 3  -- minimal number of screen columns to keep to the left and right (horizontal) of the cursor if wrap is `false`
 opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time
 opt.splitbelow = true  -- open new split below
@@ -130,7 +133,6 @@ g.skip_ts_context_commentstring_module = true
 -- lsp line stop jumping the line if errors or warns
 vim.wo.signcolumn = "yes"
 
-vim.wo.relativenumber = true
 
 -- Disable builtin plugins
 local disabled_built_ins = { "2html_plugin", "getscript", "getscriptPlugin", "gzip", "logipat", "netrw", "netrwPlugin",
@@ -177,3 +179,10 @@ if vim.g.neovide then
   vim.api.nvim_set_keymap('i', '<C-v>', '<C-r>+', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('c', '<C-v>', '<C-r>+', { noremap = true, silent = true })
 end
+
+vim.loader.enable()
+vim.opt.foldmethod = "indent"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.cursorlineopt = "number"
+vim.g.vimsyn_embed = "alpPrj"
+vim.opt.fillchars:append(',eob: ')
