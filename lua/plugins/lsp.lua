@@ -55,7 +55,6 @@ return {
           function(server_name)
             require('lspconfig')[server_name].setup(servers[server_name] or {})
           end,
-          rust_analyzer = lsp.noop,
         },
       })
 
@@ -109,7 +108,6 @@ return {
       local cmp_autopairs = require("nvim-autopairs.completion.cmp")
       cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
-      vim.g.rustaceanvim.server.capabilities = lsp.get_capabilities()
     end
   },
 
@@ -120,6 +118,5 @@ return {
   { 'hrsh7th/nvim-cmp' },
   { 'L3MON4D3/LuaSnip' },
   'windwp/nvim-autopairs',
-  'mrcjkb/rustaceanvim',
   "folke/neodev.nvim"
 }

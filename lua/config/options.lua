@@ -174,8 +174,8 @@ if vim.g.neovide then
 
   vim.g.neovide_transparency = 0.99
 
-  vim.api.nvim_set_keymap('n', '<C-v>', '"+p', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('v', '<C-v>', '"+p', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<C-v>', '<C-r>+', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('v', '<C-v>', '<C-r>+', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('i', '<C-v>', '<C-r>+', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('c', '<C-v>', '<C-r>+', { noremap = true, silent = true })
 end
