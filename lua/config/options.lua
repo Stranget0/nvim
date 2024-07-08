@@ -120,7 +120,7 @@ vim.diagnostic.config({
   severity_sort = true,
   float = {
     source = true,
-    border = "rounded",
+    border = "shadow",
   },
   signs = {
     text = { icons.diagnostics.Error, icons.diagnostics.Warn, icons.diagnostics.Info, icons.diagnostics.Hint }

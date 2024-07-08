@@ -88,7 +88,10 @@ M.keys = {
 
   format_buffer = "<leader>bf",
 
-  code_outline = "<leader>co",
+  code_outline = "<leader>oo",
+  code_outline_close = "<leader>oc",
+  overseer_list = "<leader>rr",
+  overseer_build = "<leader>rb",
 }
 
 M.triggers = {
@@ -143,6 +146,7 @@ M.triggers = {
 
 M.clues = {
   { mode = "n",               keys = "<leader>c", desc = "+code" },
+  { mode = "n",               keys = "<leader>o", desc = "+outline" },
   { mode = { "n", "v", "i" }, keys = "<leader>b", desc = "+buffer" },
   { mode = "n",               keys = "<leader>r", desc = "+runnables" },
   { mode = "n",               keys = "<leader>p", desc = "+projects" },

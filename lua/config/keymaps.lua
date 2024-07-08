@@ -323,16 +323,6 @@ local keymaps = {
     vim.keymap.set('n', keys.folds_close_all, require('ufo').closeAllFolds)
   end,
 
-  code_outline = function(outline)
-    vim.keymap.set({ "n", "v" }, keys.code_outline, function()
-      if outline.is_open() then
-        vim.cmd("<cmd>OutlineFocus<CR>")
-      else
-        vim.cmd("<cmd>Outline<CR>")
-      end
-    end, { desc = "Toggle outline" })
-  end,
-
   oil = function()
     return {
       ["g?"] = "actions.show_help",
@@ -353,7 +343,34 @@ local keymaps = {
       ["g\\"] = "actions.toggle_trash",
     }
   end,
+  code_outline = function()
+    return {
+      {
+        keys.code_outline,
+        function()
+          local outline = require("outline")
+          if outline.is_open() then
+            vim.cmd("OutlineFocus")
+          else
+            vim.cmd("Outline")
+          end
+        end,
+        desc = "Code outline"
+      },
+      {
+        keys.code_outline_close,
+        function()
+          vim.cmd("OutlineClose")
+        end,
+        desc = "Close outline"
+      }
+    }
+  end,
 
+  overseer = function()
+    vim.keymap.set("n", keys.overseer_list, "<cmd>OverseerRun<cr>", { desc = "Overseer run" })
+    vim.keymap.set("n", keys.overseer_build, "<cmd>OverseerBuild<cr>", { desc = "Overseer build" })
+  end,
   static = {
     taplo = {
       {

@@ -1,8 +1,9 @@
 return {
   {
     'stevearc/overseer.nvim',
-    config = function()
-      require('overseer').setup({})
+    config = function(opts)
+      require('overseer').setup(opts)
+      require("config.keymaps").overseer()
     end
   }
 }
