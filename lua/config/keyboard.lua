@@ -92,6 +92,9 @@ M.keys = {
   code_outline_close = "<leader>oc",
   overseer_list = "<leader>rr",
   overseer_build = "<leader>rb",
+
+  test_nearest = "<leader>tn",
+  test_file = "<leader>tf",
 }
 
 M.triggers = {
@@ -149,6 +152,7 @@ M.clues = {
   { mode = "n",               keys = "<leader>o", desc = "+outline" },
   { mode = { "n", "v", "i" }, keys = "<leader>b", desc = "+buffer" },
   { mode = "n",               keys = "<leader>r", desc = "+runnables" },
+  { mode = "n",               keys = "<leader>t", desc = "+tests" },
   { mode = "n",               keys = "<leader>p", desc = "+projects" },
   { mode = "n",               keys = "<leader>n", desc = "+notifications" },
   { mode = "n",               keys = "<leader>h", desc = "+git hunk" },

@@ -64,6 +64,10 @@ return {
       cmp.setup({
         sources = {
           {
+            name = "lazydev",
+            group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+          },
+          {
             name = "nvim_lsp",
             entry_filter = function(entry, ctx)
               return require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~= 'Text'
@@ -107,7 +111,6 @@ return {
 
       local cmp_autopairs = require("nvim-autopairs.completion.cmp")
       cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-
     end
   },
 
