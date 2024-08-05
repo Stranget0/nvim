@@ -156,7 +156,7 @@ cmd.colorscheme("oldworld")
 
 -- neovide
 if vim.g.neovide then
-  vim.o.guifont = "FiraCode Nerd Font Mono:h12" -- text below applies for VimScript
+  vim.o.guifont = "FiraMono Nerd Font Mono:h12" -- text below applies for VimScript
   vim.g.neovide_fullscreen = true
   vim.g.neovide_cursor_animation_length = 0.03
   vim.g.neovide_cursor_smooth_blink = true
