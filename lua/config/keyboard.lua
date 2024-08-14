@@ -86,7 +86,9 @@ M.keys = {
   folds_open_all = 'zR',
   folds_close_all = 'zM',
 
-  format_buffer = "<leader>bf",
+  buffer_format = "<leader>bf",
+  buffer_pick_focus = "<leader>bp",
+  buffer_pick_close = "<leader>bq",
 
   code_outline = "<leader>oo",
   code_outline_close = "<leader>oc",
@@ -139,9 +141,6 @@ M.triggers = {
   -- LSP
   { mode = "n", keys = "[" },
   { mode = "n", keys = "]" },
-  { mode = "n", keys = "g" },
-  { mode = "n", keys = "g" },
-  { mode = "n", keys = "g" },
   { mode = "n", keys = "g" },
   { mode = "n", keys = "L" },
 

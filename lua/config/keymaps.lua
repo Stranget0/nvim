@@ -12,6 +12,7 @@
 -- -- Close all windows and exit from Neovim with <leader> and q
 
 local keys = require("config.keyboard").keys
+local functions = require("utils.functions")
 
 local keymaps = {
   common = function()
@@ -371,6 +372,55 @@ local keymaps = {
     vim.keymap.set("n", keys.overseer_list, "<cmd>OverseerRun<cr>", { desc = "Overseer run" })
     vim.keymap.set("n", keys.overseer_build, "<cmd>OverseerBuild<cr>", { desc = "Overseer build" })
   end,
+
+  buffer = function()
+    local mappings = require("cokeline.mappings")
+    local buffer_api = require("cokeline.buffers")
+
+
+
+    local map = vim.keymap.set
+
+    map("n", keys.buffer_pick_focus, function() mappings.pick("focus") end, { desc = "Pick buffer to focus" })
+    map("n", keys.buffer_pick_close, function() mappings.pick("close") end, { desc = "Pick buffer to close" })
+    map("n", "<S-Tab>", "<Plug>(cokeline-focus-prev)", { silent = true, desc = "Focus next buffer" })
+    map("n", "<Tab>", "<Plug>(cokeline-focus-next)", { silent = true, desc = "Focus prev buffer" })
+    map("n", "<Leader>X", function()
+      local buffers = buffer_api.get_visible()
+      local current = buffer_api.get_current()
+      for _, buffer in ipairs(buffers) do
+        if not current and buffer or (current and buffer and buffer.index ~= current.index) then
+          mappings.by_index("close", buffer.index)
+        end
+      end
+    end, { desc = "Close all but current buffer" })
+    map("n", "<Leader>x", function()
+      local buffers = buffer_api.get_visible()
+      local current = buffer_api.get_current()
+      if not current then return end
+      for _, buffer in ipairs(buffers) do
+        if buffer and buffer.index > current.index then
+          mappings.by_index("close", buffer.index)
+        end
+      end
+    end, { desc = "Close all buffers on right" })
+
+    for i = 1, 9 do
+      map(
+        "n",
+        ("<Leader>%s"):format(i),
+        ("<Plug>(cokeline-focus-%s)"):format(i),
+        { silent = true, desc = ("focus buffer %s"):format(i) }
+      )
+      map(
+        "n",
+        ("<F%s>"):format(i),
+        ("<Plug>(cokeline-switch-%s)"):format(i),
+        { silent = true, desc = ("switch to buffer %s"):format(i) }
+      )
+    end
+  end,
+
   static = {
     taplo = {
       {
@@ -393,7 +443,7 @@ local keymaps = {
     },
     format = {
       {
-        keys.format_buffer,
+        keys.buffer_format,
         function()
           require("conform").format({ async = true, lsp_fallback = true })
         end,
