@@ -89,6 +89,8 @@ M.keys = {
   buffer_format = "<leader>bf",
   buffer_pick_focus = "<leader>bp",
   buffer_pick_close = "<leader>bq",
+  buffer_focus = "<Leader>%s",
+  buffer_switch = "<F%s>",
 
   code_outline = "<leader>oo",
   code_outline_close = "<leader>oc",

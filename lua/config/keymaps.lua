@@ -393,7 +393,7 @@ local keymaps = {
           mappings.by_index("close", buffer.index)
         end
       end
-    end, { desc = "Close all but current buffer" })
+    end, { desc = "Close other buffers" })
     map("n", "<Leader>x", function()
       local buffers = buffer_api.get_visible()
       local current = buffer_api.get_current()
@@ -408,13 +408,13 @@ local keymaps = {
     for i = 1, 9 do
       map(
         "n",
-        ("<Leader>%s"):format(i),
+        (keys.buffer_focus):format(i),
         ("<Plug>(cokeline-focus-%s)"):format(i),
         { silent = true, desc = ("focus buffer %s"):format(i) }
       )
       map(
         "n",
-        ("<F%s>"):format(i),
+        (keys.buffer_switch):format(i),
         ("<Plug>(cokeline-switch-%s)"):format(i),
         { silent = true, desc = ("switch to buffer %s"):format(i) }
       )
