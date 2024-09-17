@@ -385,7 +385,7 @@ local keymaps = {
     map("n", keys.buffer_pick_close, function() mappings.pick("close") end, { desc = "Pick buffer to close" })
     map("n", "<S-Tab>", "<Plug>(cokeline-focus-prev)", { silent = true, desc = "Focus next buffer" })
     map("n", "<Tab>", "<Plug>(cokeline-focus-next)", { silent = true, desc = "Focus prev buffer" })
-    map("n", "<Leader>X", function()
+    map("n", "<Leader><S-x>", function()
       local buffers = buffer_api.get_visible()
       local current = buffer_api.get_current()
       for _, buffer in ipairs(buffers) do
