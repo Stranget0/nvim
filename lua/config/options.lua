@@ -157,7 +157,6 @@ cmd.colorscheme("oldworld")
 -- neovide
 if vim.g.neovide then
   vim.o.guifont = "FiraMono Nerd Font Mono:h12" -- text below applies for VimScript
-  vim.g.neovide_fullscreen = true
   vim.g.neovide_cursor_animation_length = 0.03
   vim.g.neovide_cursor_smooth_blink = true
   local blink = "blinkwait500-blinkoff300-blinkon1000"
@@ -173,6 +172,12 @@ if vim.g.neovide then
   vim.g.neovide_light_radius = 5
 
   vim.g.neovide_transparency = 0.99
+  vim.g.neovide_fullscreen = false
+  vim.keymap.set({ 'n', 'v', 'i', 'c' }, '<F11>',
+    function()
+      vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
+    end
+    , { noremap = true, silent = true, desc = "Toggle Fullscreen" })
 
   vim.api.nvim_set_keymap('n', '<C-v>', '<C-r>+', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('v', '<C-v>', '<C-r>+', { noremap = true, silent = true })

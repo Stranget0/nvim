@@ -22,6 +22,66 @@ local servers = {
   },
 }
 
+
+
+local sort_by_kind = function(entry1, entry2)
+  local types = require("cmp.types")
+  local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
+  local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
+
+
+  -- lsp.CompletionItemKind = {
+  --   Text = 1,
+  --   Method = 2,
+  --   Function = 3,
+  --   Constructor = 4,
+  --   Field = 5,
+  --   Variable = 6,
+  --   Class = 7,
+  --   Interface = 8,
+  --   Module = 9,
+  --   Property = 10,
+  --   Unit = 11,
+  --   Value = 12,
+  --   Enum = 13,
+  --   Keyword = 14,
+  --   Snippet = 15,
+  --   Color = 16,
+  --   File = 17,
+  --   Reference = 18,
+  --   Folder = 19,
+  --   EnumMember = 20,
+  --   Constant = 21,
+  --   Struct = 22,
+  --   Event = 23,
+  --   Operator = 24,
+  --   TypeParameter = 25,
+  -- }
+  local kind = types.lsp.CompletionItemKind
+  local priority_overrides = {
+    [kind.Constant] = -10,
+    [kind.Property] = -9,
+    [kind.Field] = -8,
+    [kind.Method] = -7,
+    [kind.EnumMember] = -6,
+    [kind.Snippet] = -5,
+  }
+
+  kind1 = priority_overrides[kind1] or kind1
+  kind2 = priority_overrides[kind2] or kind2
+
+  if kind1 ~= kind2 then
+    local diff = kind1 - kind2
+    if diff < 0 then
+      return true
+    elseif diff > 0 then
+      return false
+    end
+  end
+  return nil
+end
+
+
 return {
   {
     'VonHeikemen/lsp-zero.nvim',
@@ -81,7 +141,7 @@ return {
             keyword_length = 0,
             group_index = 1
           },
-          { name = "luasnip", max_item_count = 15, group_index = 2 },
+          { name = "luasnip", group_index = 2 },
           { name = "buffer",  max_item_count = 15, group_index = 3 },
           { name = "crates",  max_item_count = 15 },
           { name = "path",    max_item_count = 15 },
@@ -94,17 +154,17 @@ return {
           fetching_timeout = 1000,
           confirm_resolve_timeout = 1000,
           async_budget = 1000,
-          max_view_entries = 20,
+          max_view_entries = 100,
 
         },
         sorting = {
           priority_weight = 2,
           comparators = {
-            cmp.config.compare.kind,
+            cmp.config.compare.exact,
+            sort_by_kind,
+            cmp.config.compare.recently_used,
             cmp.config.compare.length,
             cmp.config.compare.offset,
-            cmp.config.compare.recently_used,
-            cmp.config.compare.exact,
           },
         },
         snippet = {

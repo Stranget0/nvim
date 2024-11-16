@@ -388,7 +388,8 @@ local keymaps = {
     map("n", "<Leader><S-x>", function()
       local buffers = buffer_api.get_visible()
       local current = buffer_api.get_current()
-      for _, buffer in ipairs(buffers) do
+      for i = 1, #buffers do
+        local buffer = buffers[#buffers - i + 1]
         if not current and buffer or (current and buffer and buffer.index ~= current.index) then
           mappings.by_index("close", buffer.index)
         end
@@ -398,7 +399,8 @@ local keymaps = {
       local buffers = buffer_api.get_visible()
       local current = buffer_api.get_current()
       if not current then return end
-      for _, buffer in ipairs(buffers) do
+      for i = 1, #buffers do
+        local buffer = buffers[#buffers - i + 1]
         if buffer and buffer.index > current.index then
           mappings.by_index("close", buffer.index)
         end

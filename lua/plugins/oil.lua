@@ -5,7 +5,7 @@ return {
       keymaps = require("config.keymaps").oil(),
       -- use_default_keymaps = false,
       view_options = {
-        show_hidden = false,
+        show_hidden = true,
       }
     },
     -- Optional dependencies
