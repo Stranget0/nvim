@@ -8,58 +8,73 @@
 --
 -- File: config/autocmds.lua
 -- Description: Autocommand functions
--- Author: Kien Nguyen-Tuan <kiennt2609@gmail.com>
 -- Define autocommands with Lua APIs
 -- See: h:api-autocmd, h:augroup
-local augroup = vim.api.nvim_create_augroup -- Create/get autocommand group
-local autocmd = vim.api.nvim_create_autocmd -- Create autocommand
 
--- General settings
 
 -- Highlight on yank
-autocmd("TextYankPost", {
-	callback = function()
-		vim.highlight.on_yank({
-			higroup = "IncSearch",
-			timeout = "1000"
-		})
-	end
+vim.api.nvim_create_autocmd("TextYankPost", {
+    group = vim.api.nvim_create_augroup("highlight_yank", { clear = true }),
+    callback = function()
+        vim.highlight.on_yank()
+    end,
 })
 
--- Remove whitespace on save
-autocmd("BufWritePre", {
-	pattern = "",
-	command = ":%s/\\s\\+$//e"
+-- check if we need to reload the file when it changed
+vim.api.nvim_create_autocmd(
+    { "FocusGained", "CursorHold", "TermClose", "TermLeave" },
+    {
+        pattern = "*",
+        group = vim.api.nvim_create_augroup("auto_read", { clear = true }),
+        callback = function()
+            if vim.fn.getcmdwintype() == "" then
+                vim.cmd.checktime()
+            end
+        end,
+    }
+)
+
+-- show cursor line only in active window
+vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {
+    callback = function()
+        local ok, cl = pcall(vim.api.nvim_win_get_var, 0, "auto-cursorline")
+        if ok and cl then
+            vim.wo.cursorline = true
+            vim.api.nvim_win_del_var(0, "auto-cursorline")
+        end
+    end,
+})
+vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
+    callback = function()
+        local cl = vim.wo.cursorline
+        if cl then
+            vim.api.nvim_win_set_var(0, "auto-cursorline", cl)
+            vim.wo.cursorline = false
+        end
+    end,
 })
 
--- Auto format on save using the attached (optionally filtered) language servere clients
--- https://neovim.io/doc/user/lsp.html#vim.lsp.buf.format()
-autocmd("BufWritePre", {
-	pattern = "",
-	command = ":silent lua vim.lsp.buf.format()"
+-- create directories when needed, when saving a file
+vim.api.nvim_create_autocmd("BufWritePre", {
+    group = vim.api.nvim_create_augroup("auto_create_dir", { clear = true }),
+    callback = function(event)
+        local file = vim.loop.fs_realpath(event.match) or event.match
+
+        vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
+        local backup = vim.fn.fnamemodify(file, ":p:~:h")
+        backup = backup:gsub("[/\\]", "%%")
+        vim.go.backupext = backup
+    end,
 })
 
--- Don"t auto commenting new lines
-autocmd("BufEnter", {
-	pattern = "",
-	command = "set fo-=c fo-=r fo-=o"
-})
-
-autocmd("Filetype", {
-	pattern = { "xml", "html", "xhtml", "css", "scss", "javascript", "typescript", "yaml", "lua" },
-	command = "setlocal shiftwidth=2 tabstop=2"
-})
-
--- Set colorcolumn
-autocmd("Filetype", {
-	pattern = { "python", "rst", "c", "cpp" },
-	command = "set colorcolumn=80"
-})
-
-autocmd("Filetype", {
-	pattern = { "gitcommit", "markdown", "text" },
-	callback = function()
-		vim.opt_local.wrap = true
-		vim.opt_local.spell = true
-	end
+-- clear search highlight when there is no match
+vim.api.nvim_create_autocmd("CursorMoved", {
+    group = vim.api.nvim_create_augroup("clear_search", { clear = true }),
+    callback = function()
+        if vim.v.hlsearch == 1 and vim.fn.searchcount().exact_match == 0 then
+            vim.schedule(function()
+                vim.cmd.nohlsearch()
+            end)
+        end
+    end,
 })

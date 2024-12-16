@@ -1,28 +1,35 @@
 local M = {}
 
 M.keys = {
+  next = '<tab>',
+  prev = '<S-tab>',
+  up = "<tab>",
+  down = "<S-tab>",
+  confirm = '<Enter>',
+  super_confirm = '<S-Enter>',
+  mark = '<Space>',
+  super_mark = '<S-Space>',
+
   project_list = "<leader>pl",
   project_add = "<leader>pa",
   find_file = "<leader>ff",
   old_files = "<leader>fr",
-  new_file = "<leader>fn",
 
   next_diagnostic = "g[",
   prev_diagnostic = "g]",
-  diagnostic_list = "<leader>cd",
+  diagnostic_list = "<leader>d",
   go_definition = "gd",
   go_type = "gt",
   go_references = "gr",
   rename = "<leader>cr",
   code_action = "<leader>ca",
-  hover_info = "<leader>cK",
-  open_docs = "<leader>td",
+  hover_info = "K",
 
   git_prev_hunk = "<leader>h[",
   git_next_hunk = "<leader>h]",
-  git_stage_hunk = '<leader>hs',
+  git_stage_hunk = '<leader>ha',
   git_reset_hunk = '<leader>hr',
-  git_stage_buffer = '<leader>hS',
+  git_stage_buffer = '<leader>hA',
   git_undo_stage_hunk = '<leader>hu',
   git_reset_buffer_hunks = '<leader>hR',
   git_preview_hunk = '<leader>hp',
@@ -33,15 +40,9 @@ M.keys = {
   git_toggle_deleted_hunk = '<leader>hH',
   git_select_hunk = '<leader>hh',
 
-  cmp_confirm = '<Enter>',
   cmp_trigger = '<C-Space>',
-  cmp_scroll_up = '<tab>',
-  cmp_scroll_down = '<S-tab>',
   cmp_jump_forward = '<C-f>',
   cmp_jump_backward = '<C-b>',
-
-  run_nearest_test = "<leader>rt",
-  run_tests_in_file = "<leader>rT",
 
   runnables = "<leader>rr",
   last_runnable = "<leader>rR",
@@ -50,7 +51,6 @@ M.keys = {
   comment_line = '<C-m>',
   comment_visual = '<C-m>',
   comment_textobject = '<C-m>',
-
 
   surrounding_add = 'sa',
   surrounding_delete = 'sd',
@@ -62,8 +62,8 @@ M.keys = {
   surrounding_suffix_last = 'l',
   surrounding_suffix_next = 'n',
 
-  code_move_up = "J",
-  code_move_down = "K",
+  code_move_up = "<A-j>",
+  code_move_down = "<A-K>",
 
   operators_evaluate = "<leader>c=",
   operators_exchange = "<leader>cx",
@@ -83,9 +83,13 @@ M.keys = {
   notifications_history = "<leader>nh",
   notifications_clear = "<leader>nd",
 
-  folds_open_all = 'zR',
-  folds_close_all = 'zM',
+  folds_open_all = '<zC-o>',
+  folds_close_all = '<zC-c>',
 
+  buffer_close = "<leader>x",
+  buffer_close_other = "<leader><S-x>",
+  buffer_cd = "<leader>cd",
+  buffer_new = "<leader>bn",
   buffer_format = "<leader>bf",
   buffer_pick_focus = "<leader>bp",
   buffer_pick_close = "<leader>bq",
@@ -98,7 +102,14 @@ M.keys = {
   overseer_build = "<leader>rb",
 
   test_nearest = "<leader>tn",
-  test_file = "<leader>tf",
+  test_debug_nearest = "<leader>tN",
+  test_file = "<leader>tb",
+  test_watch = "<leader>tw",
+  test_debug = "<leader>td",
+  test_attach = "<leader>ta",
+  test_show_output_short = "<leader>to",
+  test_show_output = "<leader>tO",
+  test_jump = "<leader>tg",
 }
 
 M.triggers = {
