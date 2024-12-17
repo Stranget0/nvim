@@ -1,4 +1,5 @@
 local icons = require("config.icons")
+
 local servers = {
     jsonls = {},
     dockerls = {},
@@ -146,24 +147,40 @@ return {
                 },
             })
 
-            local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-            cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+            -- local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+            -- cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
         end
     },
 
     {
         'mrcjkb/rustaceanvim',
         version = '^5', -- Recommended
-        lazy = false, -- This plugin is already lazy
+        lazy = false,   -- This plugin is already lazy
     },
     {
         'saecki/crates.nvim',
         event = { "BufRead Cargo.toml" },
         tag = "stable",
         config = function()
+            ---@diagnostic disable-next-line: missing-parameter
             require('crates').setup()
         end,
     },
+    {
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+            library = {
+                -- See the configuration section for more details
+                -- Load luvit types when the `vim.uv` word is found
+                { path = "luvit-meta/library", words = { "vim%.uv" } },
+            },
+        },
+        dependencies = {
+            "hrsh7th/nvim-cmp",
+        }
+    },
+    { "Bilal2453/luvit-meta",             lazy = true }, -- optional `vim.uv` typings
     { 'neovim/nvim-lspconfig' },
     { "williamboman/mason.nvim" },
     { "williamboman/mason-lspconfig.nvim" },
@@ -171,4 +188,46 @@ return {
     { 'hrsh7th/nvim-cmp' },
     { 'L3MON4D3/LuaSnip' },
     'windwp/nvim-autopairs',
+    {
+        "j-hui/fidget.nvim",
+        lazy = false,
+        priority = 0,
+        opts = {
+            -- Options related to LSP progress subsystem
+            progress = {
+                suppress_on_insert = true,   -- Suppress new messages while in insert mode
+                ignore_done_already = false, -- Ignore new tasks that are already complete
+
+                display = {
+                    render_limit = 16,          -- How many LSP messages to show at once
+                    done_ttl = 1,               -- How long a message should persist after completion
+                    done_icon = icons.arm_flex, -- Icon shown when all LSP progress tasks are complete
+                    progress_icon =             -- Icon shown when LSP progress tasks are in progress
+                    { pattern = "dots", period = 1 },
+                },
+
+            },
+
+            -- Options related to notification subsystem
+            notification = {
+                redirect = -- Conditionally redirect notifications to another backend
+                    function(msg, level, opts)
+                        if opts and opts.on_open then
+                            vim.notify(msg, level, opts)
+                        end
+                    end,
+
+
+                -- Options related to the notification window and buffer
+                window = {
+                    winblend = 100,    -- Background color opacity in the notification window
+                    border = "shadow", -- Border around the notification window
+                },
+            },
+
+            -- Options related to integrating with other plugins
+            integration = {
+            },
+        }
+    }
 }

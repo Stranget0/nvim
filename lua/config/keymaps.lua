@@ -27,7 +27,6 @@ local keymaps = {
 
                 }, function(input)
                     if not input or input == "" then
-                        vim.notify("No input received", vim.log.levels.WARN)
                         return
                     end
 
@@ -192,35 +191,6 @@ local keymaps = {
             next_failed = keys.next_diagnostic,
             prev_failed = keys.prev_diagnostic,
         }
-        -- local test = require("neotest").run
-        --
-        -- vim.keymap.set("n", keys.test_nearest, test.run, { desc = "run nearest test" })
-        --
-        -- vim.keymap.set("n", keys.test_file,
-        --   function()
-        --     test.run(vim.fn.expand("%"))
-        --   end,
-        --   { desc = "run tests in file" })
-
-        -- vim.keymap.set(keys.stop_nearest_test,
-        -- 	test.stop,
-        -- 	{ desc = "stop nearest test" })
-        -- Run the nearest test
-        -- require("neotest").run.run()
-
-        -- Run the current file
-        -- require("neotest").run.run(vim.fn.expand("%"))
-
-        -- Debug the nearest test (requires nvim-dap and adapter support)
-        -- require("neotest").run.run({strategy = "dap"})
-        -- See :h neotest.run.run() for parameters.
-
-
-        -- Stop the nearest test, see :h neotest.run.stop()
-        -- require("neotest").run.stop()
-
-        -- Attach to the nearest test, see :h neotest.run.attach()
-        -- require("neotest").run.attach()
     end,
 
     comment = function()
@@ -285,8 +255,11 @@ local keymaps = {
     end,
 
     notifications = function()
-        vim.keymap.set('n', keys.notifications_history, MiniNotify.show_history, { desc = "show history" })
-        vim.keymap.set('n', keys.notifications_clear, MiniNotify.clear, { desc = "clear notifications" })
+        vim.keymap.set('n', keys.notifications_history, "<cmd>Telescope notify<cr>",
+            { desc = "show history", noremap = true })
+        vim.keymap.set('n', keys.notifications_clear, function()
+            require("notify").dismiss({ pending = false, silent = false })
+        end, { desc = "clear notifications", noremap = true })
     end,
 
     cmp = function(cmp, cmp_action)

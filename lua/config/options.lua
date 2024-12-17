@@ -27,7 +27,6 @@ opt.clipboard = "unnamed,unnamedplus"
 vim.opt.fileencoding = "utf-8"               -- the encoding written to a file
 opt.encoding = "utf-8"                       -- the encoding
 opt.matchpairs = { "(:)", "{:}", "[:]", "<:>" }
-opt.syntax = "enable"
 
 -- indention
 opt.autoindent = true    -- auto indentation
@@ -47,17 +46,19 @@ opt.wildmenu = true   -- make tab completion for files/buffers act like bash
 
 -- ui
 opt.cursorline = true -- highlight the current line
+vim.opt.cursorlineopt = "both"
+
 opt.laststatus = 2    -- only the last window will always have a status line
 opt.lazyredraw = true -- don"t update the display while executing macros
 opt.list = true
 
 -- You can also add "space" or "eol", but I feel it"s quite annoying
 opt.listchars = {
-  tab = "┊ ",
-  trail = "·",
-  extends = "»",
-  precedes = "«",
-  nbsp = "×"
+    tab = "┊ ",
+    trail = "·",
+    extends = "»",
+    precedes = "«",
+    nbsp = "×"
 }
 
 -- Hide cmd line
@@ -82,7 +83,7 @@ opt.writebackup = false -- if a file is being edited by another program (or was 
 -- autocomplete
 -- opt.completeopt = { "menu", "menuone", "noselect" } -- mostly just for cmp
 opt.shortmess = opt.shortmess + {
-  c = true
+    c = true
 } -- hide all the completion messages, e.g. "-- XXX completion (YYY)", "match 1 of 2", "The only match", "Pattern not found"
 
 -- By the way, -- INSERT -- is unnecessary anymore because the mode information is displayed in the statusline.
@@ -112,19 +113,19 @@ opt.foldmethod = "marker"
 opt.foldlevel = 99
 
 vim.diagnostic.config({
-  virtual_text = false,
-  virtual_lines = {
-    only_current_line = true,
-    highlight_whole_line = false,
-  },
-  severity_sort = true,
-  float = {
-    source = true,
-    border = "shadow",
-  },
-  signs = {
-    text = { icons.diagnostics.Error, icons.diagnostics.Warn, icons.diagnostics.Info, icons.diagnostics.Hint }
-  }
+    virtual_text = false,
+    virtual_lines = {
+        only_current_line = true,
+        highlight_whole_line = false,
+    },
+    severity_sort = true,
+    float = {
+        source = true,
+        border = "shadow",
+    },
+    signs = {
+        text = { icons.diagnostics.Error, icons.diagnostics.Warn, icons.diagnostics.Info, icons.diagnostics.Hint }
+    }
 })
 
 -- 'JoosepAlviste/nvim-ts-context-commentstring',
@@ -136,19 +137,19 @@ vim.wo.signcolumn = "yes"
 
 -- Disable builtin plugins
 local disabled_built_ins = { "2html_plugin", "getscript", "getscriptPlugin", "gzip", "logipat", "netrw", "netrwPlugin",
-  "netrwSettings", "netrwFileHandlers", "matchit", "tar", "tarPlugin", "rrhelper",
-  "spellfile_plugin", "vimball", "vimballPlugin", "zip", "zipPlugin", "tutor", "rplugin",
-  "synmenu", "optwin", "compiler", "bugreport", "ftplugin" }
+    "netrwSettings", "netrwFileHandlers", "matchit", "tar", "tarPlugin", "rrhelper",
+    "spellfile_plugin", "vimball", "vimballPlugin", "zip", "zipPlugin", "tutor", "rplugin",
+    "synmenu", "optwin", "compiler", "bugreport", "ftplugin" }
 
 
 for _, plugin in pairs(disabled_built_ins) do
-  g["loaded_" .. plugin] = 1
+    g["loaded_" .. plugin] = 1
 end
 
 
 for name, icon in pairs(icons.diagnostics) do
-  local hl = "DiagnosticSign" .. name
-  vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
+    local hl = "DiagnosticSign" .. name
+    vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
 end
 
 -- Colorscheme
@@ -156,38 +157,40 @@ cmd.colorscheme("oldworld")
 
 -- neovide
 if vim.g.neovide then
-  vim.o.guifont = "FiraMono Nerd Font Mono:h12" -- text below applies for VimScript
-  vim.g.neovide_cursor_animation_length = 0.03
-  vim.g.neovide_cursor_smooth_blink = true
-  local blink = "blinkwait500-blinkoff300-blinkon1000"
-  vim.o.guicursor =
-      "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:" ..
-      blink .. "-Cursor/lCursor,sm:" .. blink
-  vim.g.neovide_position_animation_length = 0.15
-  vim.g.neovide_scroll_animation_length = 0.1
+    vim.o.guifont = "FiraMono Nerd Font Mono:h12" -- text below applies for VimScript
+    vim.g.neovide_cursor_animation_length = 0.03
+    vim.g.neovide_cursor_smooth_blink = true
+    local blink = "blinkwait500-blinkoff300-blinkon1000"
+    vim.o.guicursor =
+        "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:" ..
+        blink .. "-Cursor/lCursor,sm:" .. blink
+    vim.g.neovide_position_animation_length = 0.15
+    vim.g.neovide_scroll_animation_length = 0.1
 
-  vim.g.neovide_floating_shadow = true
-  vim.g.neovide_floating_z_height = 10
-  vim.g.neovide_light_angle_degrees = 45
-  vim.g.neovide_light_radius = 5
+    vim.g.neovide_floating_shadow = true
+    vim.g.neovide_floating_z_height = 10
+    vim.g.neovide_light_angle_degrees = 45
+    vim.g.neovide_light_radius = 5
 
-  vim.g.neovide_transparency = 0.99
-  vim.g.neovide_fullscreen = false
-  vim.keymap.set({ 'n', 'v', 'i', 'c' }, '<F11>',
-    function()
-      vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
-    end
-    , { noremap = true, silent = true, desc = "Toggle Fullscreen" })
+    vim.g.neovide_transparency = 0.99
+    vim.g.neovide_fullscreen = false
+    vim.keymap.set({ 'n', 'v', 'i', 'c' }, '<F11>',
+        function()
+            vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
+        end
+        , { noremap = true, silent = true, desc = "Toggle Fullscreen" })
 
-  vim.api.nvim_set_keymap('n', '<C-v>', '<C-r>+', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('v', '<C-v>', '<C-r>+', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('i', '<C-v>', '<C-r>+', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('c', '<C-v>', '<C-r>+', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('n', '<C-v>', '<C-r>+', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('v', '<C-v>', '<C-r>+', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('i', '<C-v>', '<C-r>+', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('c', '<C-v>', '<C-r>+', { noremap = true, silent = true })
 end
 
 vim.loader.enable()
+vim.lsp.inlay_hint.enable()
 vim.opt.foldmethod = "indent"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-opt.cursorlineopt = "number"
+-- Controls syntax highlighting for embedded languages in Vimscript files. (first letter is the language name)
 vim.g.vimsyn_embed = "alpPrj"
+-- Removes the default ~ characters displayed at the end of a buffer.
 vim.opt.fillchars:append(',eob: ')

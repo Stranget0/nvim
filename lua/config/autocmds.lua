@@ -78,3 +78,12 @@ vim.api.nvim_create_autocmd("CursorMoved", {
         end
     end,
 })
+
+-- Set fold settings for every new window
+vim.api.nvim_create_autocmd("WinNew", {
+    group = vim.api.nvim_create_augroup("TreesitterFolding", { clear = true }),
+    callback = function()
+        vim.wo.foldmethod = 'expr'
+        vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    end,
+})

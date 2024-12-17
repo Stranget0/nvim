@@ -10,6 +10,7 @@ return {
             "nvim-treesitter/nvim-treesitter",
             'mrcjkb/rustaceanvim',
             'nvim-neotest/neotest-jest',
+            'mfussenegger/nvim-dap',
         },
         config = function()
             local keymaps = require("config.keymaps").testing()
