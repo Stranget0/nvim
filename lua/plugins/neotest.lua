@@ -13,8 +13,6 @@ return {
             'mfussenegger/nvim-dap',
         },
         config = function()
-            local keymaps = require("config.keymaps").testing()
-
             require("neotest").setup({
                 watch = { enabled = false },
                 default_strategy = "dap",
@@ -28,26 +26,7 @@ return {
                     expand_errors = true,
                     follow = true,
                     count = false,
-                    mappings = {
-                        run          = keymaps.confirm,
-                        stop         = keymaps.confirm,
-                        mark         = keymaps.mark,
-                        watch        = keymaps.toggle_watch,
-                        debug        = keymaps.test_debug,
-                        attach       = keymaps.test_attach,
-                        output       = keymaps.show_output,
-                        short        = keymaps.show_output_short,
-                        jumpto       = keymaps.jump_to_test,
-                        run_marked   = keymaps.super_confirm,
-                        expand       = keymaps.mark,
-                        expand_all   = keymaps.expand_all,
-                        target       = keymaps.super_mark,
-                        prev_failed  = keymaps.prev_failed,
-                        next_failed  = keymaps.next_failed,
-                        clear_marked = keymaps.mark,
-                        clear_target = keymaps.super_mark,
-                        debug_marked = keymaps.test_debug,
-                    }
+                    mappings = require("config.keyboard").keys.testing_summary
                 },
 
                 adapters = {

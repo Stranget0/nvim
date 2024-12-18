@@ -1,9 +1,10 @@
 local f = require("utils.functions")
 local icons = require("config.icons")
 local colors = require("oldworld.palette")
-local keymaps = require("config.keymaps")
+local keys = require("config.keyboard").keys
 
 return {
+    { "echasnovski/mini.icons", opts = {} },
     {
         -- decorations
         'stevearc/dressing.nvim',
@@ -16,6 +17,11 @@ return {
         config = function()
             require('notify').setup()
             vim.notify = require("notify")
+            vim.keymap.set('n', keys.notifications.history, "<cmd>Telescope notify<cr>",
+                { desc = "show history", noremap = true })
+            vim.keymap.set('n', keys.notifications.clear, function()
+                require("notify").dismiss({ pending = false, silent = false })
+            end, { desc = "clear notifications", noremap = true })
         end
     },
     {
@@ -33,7 +39,8 @@ return {
         'stevearc/overseer.nvim',
         config = function(opts)
             require('overseer').setup(opts)
-            keymaps.overseer()
+            vim.keymap.set("n", keys.overseer.open_list, "<cmd>OverseerRun<cr>", { desc = "Overseer run" })
+            vim.keymap.set("n", keys.overseer.run_build, "<cmd>OverseerBuild<cr>", { desc = "Overseer build" })
         end
     },
     {
@@ -41,7 +48,27 @@ return {
         "hedyhli/outline.nvim",
         lazy = true,
         cmd = { "Outline", "OutlineOpen" },
-        keys = keymaps.code_outline(),
+        keys = {
+            {
+                keys.code_outline.open,
+                function()
+                    local outline = require("outline")
+                    if outline.is_open() then
+                        vim.cmd("OutlineFocus")
+                    else
+                        vim.cmd("Outline")
+                    end
+                end,
+                desc = "Code outline"
+            },
+            {
+                keys.code_outline.close,
+                function()
+                    vim.cmd("OutlineClose")
+                end,
+                desc = "Close outline"
+            }
+        },
         opts = {
             auto_close = true,
         }
@@ -420,7 +447,6 @@ return {
                 text = " "
             }
 
-            keymaps.buffer()
 
             require('cokeline').setup({
                 show_if_buffers_are_at_least = 1,
@@ -455,6 +481,49 @@ return {
                 }
 
             })
+
+
+            local mappings = require("cokeline.mappings")
+            local buffer_api = require("cokeline.buffers")
+
+            vim.keymap.set("n", keys.buffers.pick_focus, function() mappings.pick("focus") end,
+                { desc = "Pick buffer to focus" })
+            vim.keymap.set("n", keys.buffers.pick_close, function() mappings.pick("close") end,
+                { desc = "Pick buffer to close" })
+            vim.keymap.set("n", keys.prev, "<Plug>(cokeline-focus-prev)", { silent = true, desc = "Focus next buffer" })
+            vim.keymap.set("n", keys.next, "<Plug>(cokeline-focus-next)", { silent = true, desc = "Focus prev buffer" })
+            vim.keymap.set("n", keys.buffers.close_other, function()
+                local buffers = buffer_api.get_visible()
+                local current = buffer_api.get_current()
+                for i = 1, #buffers do
+                    local buffer = buffers[#buffers - i + 1]
+                    if not current and buffer or (current and buffer and buffer.index ~= current.index) then
+                        mappings.by_index("close", buffer.index)
+                    end
+                end
+            end, { desc = "Close other buffers" })
+
+            vim.keymap.set("n", keys.buffers.close, function()
+                local current = buffer_api.get_current()
+                if current then
+                    mappings.by_index("close", current.index)
+                end
+            end, { desc = "Close active buffer" })
+
+            for i = 1, 9 do
+                vim.keymap.set(
+                    "n",
+                    (keys.buffers.focus):format(i),
+                    ("<Plug>(cokeline-focus-%s)"):format(i),
+                    { silent = true, desc = ("focus buffer %s"):format(i) }
+                )
+                vim.keymap.set(
+                    "n",
+                    (keys.buffers.switch):format(i),
+                    ("<Plug>(cokeline-switch-%s)"):format(i),
+                    { silent = true, desc = ("switch to buffer %s"):format(i) }
+                )
+            end
         end
     }
 }

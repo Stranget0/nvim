@@ -1,3 +1,4 @@
+local keys = require("config.keyboard").keys
 local slow_format_filetypes = { "rust", "json" }
 
 local isFileIgnored = function(bufnr)
@@ -20,7 +21,16 @@ return {
         'stevearc/conform.nvim',
         event = { "BufWritePre" },
         cmd = { "ConformInfo" },
-        keys = require("config.keymaps").static.format,
+        keys = {
+            {
+                keys.buffers.format,
+                function()
+                    require("conform").format({ async = true, lsp_fallback = true })
+                end,
+                mode = "",
+                desc = "Format buffer",
+            }
+        },
 
         opts = {
             formatters_by_ft = {

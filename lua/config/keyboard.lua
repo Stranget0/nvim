@@ -1,6 +1,7 @@
 local M = {}
 
 M.keys = {
+    unused = "<leader><leader>",
     next = '<tab>',
     prev = '<S-tab>',
     up = "<tab>",
@@ -9,14 +10,17 @@ M.keys = {
     super_confirm = '<S-Enter>',
     mark = '<Space>',
     super_mark = '<S-Space>',
+    cd = "<leader>cd",
+    cd_alt = "<leader>cD",
+    close = "q",
 
     project_list = "<leader>pl",
     project_add = "<leader>pa",
     find_file = "<leader>ff",
     old_files = "<leader>fr",
 
-    next_diagnostic = "g[",
-    prev_diagnostic = "g]",
+    next_diagnostic = "[d",
+    prev_diagnostic = "]d",
     diagnostic_list = "<leader>d",
     go_definition = "gd",
     go_type = "gt",
@@ -25,92 +29,139 @@ M.keys = {
     code_action = "<leader>ca",
     hover_info = "K",
 
-    git_prev_hunk = "<leader>h[",
-    git_next_hunk = "<leader>h]",
-    git_stage_hunk = '<leader>ha',
+    runnables = "<leader>rr",
+    last_runnable = "<leader>rR",
+
+    code_move_up = "<A-j>",
+    code_move_down = "<A-K>",
+
+    folds_open_all = 'zR',
+    folds_close_all = 'zM',
+
+}
+
+M.keys.comment = {
+    comment = 'gc',
+    comment_line = 'gcc',
+    comment_visual = 'gc',
+    textobject = 'gc',
+}
+
+M.keys.operators = {
+    evaluate = "<leader>c=",
+    exchange = "<leader>cx",
+    multiply = "<leader>cm",
+    replace = "<leader>cR",
+    sort = "<leader>cs",
+}
+
+M.keys.surround = {
+    insert = "<C-g>s",
+    insert_line = "<C-g>S",
+    normal = "ys",
+    normal_cur = "yss",
+    normal_line = "yS",
+    normal_cur_line = "ySS",
+    visual = "S",
+    visual_line = "gS",
+    delete = "ds",
+    change = "cs",
+    change_line = "cS",
+}
+
+M.keys.buffers = {
+    close = "<leader>x",
+    close_other = "<leader><S-x>",
+    new = "<leader>bn",
+    format = "<leader>bf",
+    pick_focus = "<leader>bp",
+    pick_close = "<leader>bq",
+    focus = "<Leader>%s",
+    switch = "<F%s>",
+}
+
+local test_debug = "<leader>td"
+M.keys.testing_summary = {
+    run          = M.keys.confirm,         -- run test
+    stop         = M.keys.confirm,         -- stop test
+    mark         = M.keys.mark,            -- mark test
+    watch        = "<leader>tw",           -- toggle watch
+    debug        = test_debug,             -- debug selected test
+    attach       = "<leader>ta",           -- attach to selected test
+    output       = "<leader>tO",           -- output long
+    short        = "<leader>to",           -- output short
+    jumpto       = "<leader>tg",           -- jump to selected test
+    run_marked   = M.keys.super_confirm,   -- run all marked tests
+    expand       = M.keys.mark,            -- expand tests
+    expand_all   = M.keys.folds_open_all,  -- expand all surrounding tests
+    target       = M.keys.super_mark,      -- show only this test in file
+    prev_failed  = M.keys.prev_diagnostic, -- jump to previous failed test
+    next_failed  = M.keys.next_diagnostic, -- jump to next failed test
+    clear_marked = M.keys.mark,            -- clear all marked tests
+    clear_target = M.keys.super_mark,      -- show all tests
+    debug_marked = test_debug,             -- debug all marked tests
+}
+
+M.keys.notifications = {
+    history = "<leader>nh",
+    clear = "<leader>nd",
+}
+
+M.keys.code_outline = {
+    open = "<leader>oo",
+    close = "<leader>oc",
+}
+
+M.keys.overseer = {
+    open_list = "<leader>rr",
+    run_build = "<leader>rb",
+}
+
+M.keys.cmp =
+{
+    confirm = M.keys.confirm,
+    open_completion_menu = '<C-Space>',
+    next_completion = M.keys.next,
+    prev_completion = M.keys.prev,
+    jump_forward = '<C-f>',
+    jump_backward = '<C-b>',
+}
+
+
+M.keys.oil = {
+    show_help = "g?",
+    open_selected = M.keys.confirm,
+    select_and = M.keys.super_confirm,
+    toggle_preview = M.keys.hover_info,
+    close = M.keys.close,
+    go_to_parent = "-",
+    go_to_working_directory = "_",
+    change_sort = "gs",
+    open_external = "gx",
+    toggle_hidden = "g.",
+    toggle_trash = "g\\"
+
+
+}
+
+M.keys.github = {
+    git_prev_hunk = "[g",
+    git_next_hunk = "]g",
+    git_diffthis = '<leader>hd',
+    git_diffthis_tilde = '<leader>hD',
+    git_blame_line = '<leader>hb',
+    git_blame_line_toggle = '<leader>hB',
+    git_select_hunk = '<leader>hh',
+    git_stage_hunk = '<leader>hh',
     git_reset_hunk = '<leader>hr',
     git_stage_buffer = '<leader>hA',
     git_undo_stage_hunk = '<leader>hu',
     git_reset_buffer_hunks = '<leader>hR',
     git_preview_hunk = '<leader>hp',
-    git_blame_line = '<leader>hb',
-    git_blame_line_toggle = '<leader>hB',
-    git_diffthis = '<leader>hd',
-    git_diffthis_tilde = '<leader>hD',
-    git_toggle_deleted_hunk = '<leader>hH',
-    git_select_hunk = '<leader>hh',
-
-    cmp_trigger = '<C-Space>',
-    cmp_jump_forward = '<C-f>',
-    cmp_jump_backward = '<C-b>',
-
-    runnables = "<leader>rr",
-    last_runnable = "<leader>rR",
-
-    comment = 'gc',
-    comment_line = 'gcc',
-    comment_visual = 'gc',
-    comment_textobject = 'gc',
-
-    surrounding_add = 'sa',
-    surrounding_delete = 'sd',
-    surrounding_find = 'sf',
-    surrounding_find_left = 'sF',
-    surrounding_highlight = 'sh',
-    surrounding_replace = 'sr',
-    surrounding_update_n_lines = 'sn',
-    surrounding_suffix_last = 'l',
-    surrounding_suffix_next = 'n',
-
-    code_move_up = "<A-j>",
-    code_move_down = "<A-K>",
-
-    operators_evaluate = "<leader>c=",
-    operators_exchange = "<leader>cx",
-    operators_multiply = "<leader>cm",
-    operators_replace = "<leader>cR",
-    operators_sort = "<leader>cs",
-
-    ai_around = 'a',
-    ai_inside = 'i',
-    ai_around_next = 'an',
-    ai_inside_next = 'in',
-    ai_around_last = 'al',
-    ai_inside_last = 'il',
-    ai_goto_left = 'gh',
-    ai_goto_right = 'gl',
-
-    notifications_history = "<leader>nh",
-    notifications_clear = "<leader>nd",
-
-    folds_open_all = '<zC-o>',
-    folds_close_all = '<zC-c>',
-
-    buffer_close = "<leader>x",
-    buffer_close_other = "<leader><S-x>",
-    buffer_cd = "<leader>cd",
-    buffer_new = "<leader>bn",
-    buffer_format = "<leader>bf",
-    buffer_pick_focus = "<leader>bp",
-    buffer_pick_close = "<leader>bq",
-    buffer_focus = "<Leader>%s",
-    buffer_switch = "<F%s>",
-
-    code_outline = "<leader>oo",
-    code_outline_close = "<leader>oc",
-    overseer_list = "<leader>rr",
-    overseer_build = "<leader>rb",
-
-    test_nearest = "<leader>tn",
-    test_debug_nearest = "<leader>tN",
-    test_file = "<leader>tb",
-    test_watch = "<leader>tw",
-    test_debug = "<leader>td",
-    test_attach = "<leader>ta",
-    test_show_output_short = "<leader>to",
-    test_show_output = "<leader>tO",
-    test_jump = "<leader>tg",
+    git_toggle_deleted_hunk = '<leader>ht',
 }
+
+
 
 M.triggers = {
     -- Leader triggers
@@ -179,5 +230,26 @@ M.check_conflicts = function()
         end
     end
 end
+
+function check(keyOrObject)
+    if type(keyOrObject) == "table" then
+        for _, value in pairs(keyOrObject) do
+            check(value)
+        end
+    else
+        local bindDetails = vim.fn.execute("verbose map " .. keyOrObject)
+        if not bindDetails then
+            vim.notify("Unused key: " .. keyOrObject .. " " .. bindDetails, vim.log.levels.WARN)
+        end
+    end
+end
+
+M.log_unused_keys = function()
+    for key, value in pairs(M.keys) do
+        check(value)
+    end
+end
+
+M.log_unused_keys()
 
 return M

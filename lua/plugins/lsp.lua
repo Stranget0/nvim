@@ -1,4 +1,5 @@
 local icons = require("config.icons")
+local keys = require("config.keyboard").keys
 
 local servers = {
     jsonls = {},
@@ -19,7 +20,19 @@ local servers = {
         }
     },
     taplo = {
-        keys = require("config.keymaps").static.taplo,
+        keys = {
+            {
+                keys.hover_info,
+                function()
+                    if vim.fn.expand("%:t") == "Cargo.toml" and require("crates").popup_available() then
+                        require("crates").show_popup()
+                    else
+                        vim.lsp.buf.hover()
+                    end
+                end,
+                desc = "Show Crate Documentation",
+            },
+        },
     },
 }
 
@@ -63,7 +76,6 @@ return {
         config = function()
             local lsp = require('lsp-zero')
             lsp.extend_lspconfig()
-            local keymaps = require('config.keymaps')
 
             lsp.set_sign_icons({
                 error = icons.diagnostics.Error,
@@ -72,13 +84,81 @@ return {
                 hint = icons.diagnostics.Hint,
             })
 
-            lsp.on_attach(function(client, bufnr)
-                keymaps.lsp(bufnr)
-            end)
+            local on_attach = function(client, bufnr)
+                vim.keymap.set("n", keys.next_diagnostic, vim.diagnostic.goto_prev,
+                    { desc = "go prev diagnostic", buffer = bufnr })
+                vim.keymap.set("n", keys.prev_diagnostic, vim.diagnostic.goto_next,
+                    { desc = "go next diagnostic", buffer = bufnr })
+                vim.keymap.set("n", keys.diagnostic_list, "<cmd>Telescope diagnostics<cr>",
+                    { desc = "diagnostics", buffer = bufnr })
+                vim.keymap.set("n", keys.go_definition, "<cmd>Telescope lsp_definitions<cr>",
+                    { desc = "go definition", buffer = bufnr })
+                vim.keymap.set("n", keys.go_type, "<cmd>Telescope lsp_type_definitions<cr>",
+                    { desc = "go type", buffer = bufnr })
+                vim.keymap.set("n", keys.go_references, "<cmd>Telescope lsp_references<cr>",
+                    { desc = "go references", buffer = bufnr })
+                vim.keymap.set("n", keys.rename, vim.lsp.buf.rename, { desc = "rename", buffer = bufnr })
+                vim.keymap.set("n", keys.hover_info, vim.lsp.buf.hover, { desc = "hover info", buffer = bufnr })
+                vim.keymap.set({ "n", "v" }, keys.code_action, vim.lsp.buf.code_action,
+                    { desc = "code action", buffer = bufnr })
+            end
+
+            lsp.on_attach(on_attach)
 
             vim.g.rustaceanvim = {
                 server = {
-                    capabilities = lsp.get_capabilities()
+                    capabilities = lsp.get_capabilities(),
+                    on_attach = function(client, bufnr)
+                        on_attach(client, bufnr)
+
+                        vim.keymap.set("n", keys.code_action,
+                            function()
+                                vim.cmd.RustLsp("codeAction")
+                            end,
+                            { desc = "code action", buffer = bufnr, silent = true }
+                        )
+
+                        vim.keymap.set("n", keys.hover_info,
+                            function()
+                                vim.cmd.RustLsp({ 'hover', 'actions' })
+                            end,
+                            { desc = "hover actions", buffer = bufnr, silent = true }
+                        )
+
+                        vim.keymap.set(
+                            { "n", "v" },
+                            keys.code_move_up,
+                            function()
+                                vim.cmd.RustLsp { 'moveItem', 'up' }
+                            end,
+                            { desc = "move item up", buffer = bufnr, silent = true }
+                        )
+                        vim.keymap.set(
+                            { "n", "v" },
+                            keys.code_move_down,
+                            function()
+                                vim.cmd.RustLsp { 'moveItem', 'down' }
+                            end,
+                            { desc = "move item down", buffer = bufnr, silent = true }
+                        )
+
+                        vim.keymap.set(
+                            "n",
+                            keys.runnables,
+                            function()
+                                vim.cmd.RustLsp('runnables')
+                            end,
+                            { desc = "runnables", buffer = bufnr, silent = true }
+                        )
+
+                        vim.keymap.set(
+                            "n",
+                            keys.last_runnable,
+                            function()
+                                vim.cmd.RustLsp { 'runnables', bang = true }
+                            end,
+                            { desc = "run last runnable", buffer = bufnr, silent = true })
+                    end,
                 },
             }
             require('mason').setup({})
@@ -119,7 +199,18 @@ return {
                     { name = "crates",  max_item_count = 15 },
                     { name = "path",    max_item_count = 15 },
                 },
-                mapping = cmp.mapping.preset.insert(keymaps.cmp(cmp, cmp_action)),
+                mapping = cmp.mapping.preset.insert({
+
+                    [keys.cmp.confirm] = cmp.mapping.confirm({ select = true }),
+                    [keys.cmp.open_completion_menu] = cmp.mapping.complete(),
+                    -- scroll up and down the documentation window
+                    [keys.cmp.next_completion] = cmp.mapping.scroll_docs(-4),
+                    [keys.cmp.prev_completion] = cmp.mapping.scroll_docs(4),
+                    -- navigate between snippet placeholders
+                    [keys.cmp.jump_forward] = cmp_action.luasnip_jump_forward(),
+                    [keys.cmp.jump_backward] = cmp_action.luasnip_jump_backward(),
+
+                }),
                 preselect = cmp.PreselectMode.Item,
                 performance = {
                     debounce = 100,
@@ -127,8 +218,7 @@ return {
                     fetching_timeout = 1000,
                     confirm_resolve_timeout = 1000,
                     async_budget = 1000,
-                    max_view_entries = 100,
-
+                    max_view_entries = 1000,
                 },
                 sorting = {
                     priority_weight = 2,

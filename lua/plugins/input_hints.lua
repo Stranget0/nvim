@@ -4,9 +4,6 @@ return { {
     config = function()
         local miniclue = require('mini.clue')
         local keyboard = require("config.keyboard")
-        local keymaps = require("config.keymaps")
-
-        keymaps.notifications()
 
         miniclue.setup({
             triggers = keyboard.triggers,
