@@ -42,7 +42,7 @@ return {
                 typescriptreact = { "prettierd", "prettier" },
                 rust = { "rustfmt" },
                 toml = { "taplo" },
-                json = { "yq" },
+                json = { "jq" },
                 sh = { "shfmt" },
             },
             formatters = {
