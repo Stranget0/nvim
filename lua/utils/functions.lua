@@ -90,7 +90,7 @@ function module.projectRootByFindGit(dir)
     -- Check if the given directory exists and contains a .git folder
     local git_dir = dir .. '/.git'
 
-    if vim.fn.isdirectory(git_dir) == 1 then
+    if vim.fn.isdirectory(git_dir) == 1 or vim.fn.filereadable(git_dir) == 1 then
         return dir -- Return the current directory if it contains a .git folder
     end
 

@@ -478,8 +478,12 @@ return {
                 tabs = {
                     placement = "right",
                     components = {}
+                },
+                buffers = {
+                    filter_valid = function(buffer)
+                        return buffer.index <= 4 -- Show only the first 4 buffers
+                    end,
                 }
-
             })
 
 
@@ -524,6 +528,15 @@ return {
                     { silent = true, desc = ("switch to buffer %s"):format(i) }
                 )
             end
+
+            vim.api.nvim_create_autocmd("BufEnter", {
+                callback = function()
+                    local buffers = buffer_api.get_visible()
+                    if #buffers > 4 then
+                        mappings.by_index("close", 4)
+                    end
+                end,
+            })
         end
     }
 }

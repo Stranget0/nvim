@@ -13,6 +13,11 @@ M.keys = {
     cd = "<leader>cd",
     cd_alt = "<leader>cD",
     close = "q",
+    close_alt = "<esc>",
+    focus_left = "<C-h>",
+    focus_right = "<C-l>",
+    focus_up = "<C-k>",
+    focus_down = "<C-j>",
 
     project_list = "<leader>pl",
     project_add = "<leader>pa",
@@ -37,7 +42,6 @@ M.keys = {
 
     folds_open_all = 'zR',
     folds_close_all = 'zM',
-
 }
 
 M.keys.comment = {
@@ -161,7 +165,15 @@ M.keys.github = {
     git_toggle_deleted_hunk = '<leader>ht',
 }
 
-
+M.keys.terminal = {
+    toggle = '<C-\\>',
+    select_list = '<leader>st',
+    close = M.keys.close_alt,
+    focus_left = M.keys.focus_left,
+    focus_right = M.keys.focus_right,
+    focus_up = M.keys.focus_up,
+    focus_down = M.keys.focus_down,
+}
 
 M.triggers = {
     -- Leader triggers
@@ -219,6 +231,7 @@ M.clues = {
     { mode = "n", keys = "<leader>p", desc = "+projects" },
     { mode = "n", keys = "<leader>n", desc = "+notifications" },
     { mode = "n", keys = "<leader>h", desc = "+git hunk" },
+    { mode = "n", keys = "<leader>s", desc = "+select" },
 }
 
 M.check_conflicts = function()
